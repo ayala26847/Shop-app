@@ -1,0 +1,27 @@
+{
+  "home": {
+    "welcome": "Welcome to our bakery!",
+    "browse": "Browse our products"
+  },
+    "navbar": {
+        "home": "Home",
+        "about": "About Us",
+        "products": "Products",
+        "cart": "Cart",
+        "language": "Language",
+        "toggleMenu": "Toggle Menu"
+    },
+  "about": {
+    "title": "About Us",
+    "description": "We are a family-owned bakery dedicated to bringing you the freshest and most delicious baked goods."
+  },
+  "products": {
+    "title": "Our Products",
+    "description": "Explore our wide range of freshly baked goods, from breads to pastries."
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "checkout": "Proceed to Checkout"
+  }
+}
