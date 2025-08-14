@@ -3,25 +3,44 @@
     "welcome": "Welcome to our bakery!",
     "browse": "Browse our products"
   },
-    "navbar": {
-        "home": "Home",
-        "about": "About Us",
-        "products": "Products",
-        "cart": "Cart",
-        "language": "Language",
-        "toggleMenu": "Toggle Menu"
-    },
+  "navbar": {
+    "home": "Home",
+    "about": "About Us",
+    "products": "Products",
+    "cart": "Cart",
+    "language": "Language",
+    "toggleMenu": "Toggle Menu",
+    "categories": "Categories"
+  },
   "about": {
     "title": "About Us",
     "description": "We are a family-owned bakery dedicated to bringing you the freshest and most delicious baked goods."
   },
   "products": {
     "title": "Our Products",
-    "description": "Explore our wide range of freshly baked goods, from breads to pastries."
+    "description": "Explore our wide range of freshly baked goods, from breads to pastries.",
+    "noneInCategory": "No products available in this category."
   },
   "cart": {
     "title": "Your Cart",
     "empty": "Your cart is empty.",
-    "checkout": "Proceed to Checkout"
+    "checkout": "Proceed to Checkout",
+    "add": "Add to cart",
+    "remove": "Remove",
+    "clear": "Clear cart",
+    "total": "Total"
+  },
+  "categories": {
+    "bakery": "Bakery",
+    "dairy": "Dairy",
+    "frozen": "Frozen",
+    "fruits": "Fruits",
+    "seafood": "Seafood",
+    "beverages": "Beverages",
+    "snacks": "Snacks",
+    "condiments": "Condiments",
+    "cakes": "Cakes",
+    "cookies": "Cookies",
+    "cheesecakes": "Cheesecakes"
   }
 }

@@ -1,11 +1,12 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 // import counterReducer from '../features/counter/counterSlice';
-import productsReducer from '../features/products/productsSlice';
-
+import productsReducer from "../features/products/productsSlice";
+import cartSliceReducer from "../features/cart/cartSlice";
 
 export const store = configureStore({
   reducer: {
-    products: productsReducer,
+    productsSlice: productsReducer,
+    cartSlice: cartSliceReducer,
   },
 });
 // טיפוס עבור שימוש ב־useSelector ו־useDispatch עם TypeScript
@@ -19,7 +20,3 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-
-
-
-

@@ -1,35 +1,41 @@
+// components/Header.tsx
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Category } from "../types/products";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { CategoriesMenu } from "./CategoriesMenu";
+import { useSelector } from "react-redux";
+import { selectCartCount } from "../features/cart/cartSlice";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { t, i18n } = useTranslation();
-    // Toggle language function
-   
+  const { t } = useTranslation();
+const count = useSelector(selectCartCount);
+
+  const handleSelectCategory = (id: string) => {
+    setMenuOpen(false); // סגירת תפריט במובייל אחרי בחירה
+    // פה בעתיד נוכל להפעיל פילטור בסטור/Redux
+  };
+
   const navLinks = (
     <>
       <LanguageSwitcher />
-      <NavLink to="/" className="hover:text-pink-600" onClick={() => setMenuOpen(false)}>{t("navbar.home")}</NavLink>
-      <NavLink to="/about" className="hover:text-pink-600" onClick={() => setMenuOpen(false)}>{t("navbar.about")}</NavLink>
-
-      <div className="relative group">
-        <button className="hover:text-pink-600">Categories</button>
-        <div className="absolute hidden group-hover:block bg-white shadow rounded mt-0 p-2 min-w-max z-50">
-          {Object.values(Category).map((cat) => (
-            <Link
-              key={cat}
-              to={`/category/${cat.toLowerCase()}`}
-              className="block px-4 py-1 hover:bg-pink-100"
-              onClick={() => setMenuOpen(false)}
-            >
-              {cat}
-            </Link>
-          ))}
-        </div>
-      </div>
+      <NavLink to="/" className="hover:text-pink-600" onClick={() => setMenuOpen(false)}>
+        {t("navbar.home")}
+      </NavLink>
+      <NavLink to="/about" className="hover:text-pink-600" onClick={() => setMenuOpen(false)}>
+        {t("navbar.about")}
+      </NavLink>
+     
+      <CategoriesMenu onSelectCategory={handleSelectCategory} />
+       <NavLink to="/cart" className="relative hover:text-pink-600">
+  {t('navbar.cart')}
+  {count > 0 && (
+    <span className="absolute -top-2 -right-3 text-xs bg-pink-600 text-white rounded-full px-1.5">
+      {count}
+    </span>
+  )}
+</NavLink>
     </>
   );
 
@@ -80,3 +86,4 @@ export function Header() {
     </header>
   );
 }
+// This component serves as the header for the application, providing navigation links and a responsive design for both desktop and mobile views.

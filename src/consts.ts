@@ -1,4 +1,4 @@
-import { Category, Product } from './types/products';
+import {  Product } from './types/products';
 
 export const products: Product[] = [
   {
@@ -6,14 +6,14 @@ export const products: Product[] = [
     name: 'אבקת נוגט איכותית',
     price: 19.9,
     image: 'https://via.placeholder.com/300x200.png?text=Nougat',
-    categories: [Category.BAKERY],
+    categoryIds: ['bakery'],
   },
   {
     id: 2,
     name: 'קלטיות לפאי קפואות',
     price: 29.5,
     image: 'https://via.placeholder.com/300x200.png?text=Pie+Shells',
-    categories: [Category.BAKERY],
+    categoryIds: ['bakery'],
 
   },
   {
@@ -21,7 +21,7 @@ export const products: Product[] = [
     name: 'פירות קפואים – תות',
     price: 14.9,
     image: 'https://via.placeholder.com/300x200.png?text=Frozen+Strawberries',
-    categories: [Category.BAKERY],
+    categoryIds: ['bakery'],
 
   },
 
