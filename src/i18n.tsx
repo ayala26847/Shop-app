@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import i18n, { dir } from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
@@ -13,15 +13,16 @@ i18n
       en: { translation: en },
       he: { translation: he },
     },
-    lng: 'he',
+    lng: "he",
     fallbackLng: "en",
     interpolation: {
       escapeValue: false,
     },
     detection: {
-    order: ['localStorage', 'navigator'],
-    caches: ['localStorage'],
-},
+      order: ["localStorage", "navigator"],
+      caches: ["localStorage"],
+  
+    }
   });
 
 export default i18n;

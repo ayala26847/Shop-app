@@ -6,64 +6,75 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { CategoriesMenu } from "./CategoriesMenu";
 import { useSelector } from "react-redux";
 import { selectCartCount } from "../features/cart/cartSlice";
+import { useDirection } from "../hooks/useDirection";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();
-const count = useSelector(selectCartCount);
+  const count = useSelector(selectCartCount);
+  const { isRTL, dir } = useDirection();
 
   const handleSelectCategory = (id: string) => {
-    setMenuOpen(false); // סגירת תפריט במובייל אחרי בחירה
-    // פה בעתיד נוכל להפעיל פילטור בסטור/Redux
+    setMenuOpen(false);
   };
 
-  const navLinks = (
-    <>
-      <LanguageSwitcher />
-      <NavLink to="/" className="hover:text-pink-600" onClick={() => setMenuOpen(false)}>
-        {t("navbar.home")}
-      </NavLink>
-      <NavLink to="/about" className="hover:text-pink-600" onClick={() => setMenuOpen(false)}>
-        {t("navbar.about")}
-      </NavLink>
-     
-      <CategoriesMenu onSelectCategory={handleSelectCategory} />
-       <NavLink to="/cart" className="relative hover:text-pink-600">
-  {t('navbar.cart')}
-  {count > 0 && (
-    <span className="absolute -top-2 -right-3 text-xs bg-pink-600 text-white rounded-full px-1.5">
-      {count}
-    </span>
-  )}
-</NavLink>
-    </>
-  );
-
   return (
-    <header className="bg-white shadow sticky top-0 z-20">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold text-pink-600">Shop</Link>
+    <header dir={dir} className="bg-white shadow sticky top-0 z-20">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        
+        {/* לוגו */}
+        <Link to="/" className="text-2xl font-bold text-yellow-600">
+          Bakeo
+        </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex space-x-6 items-center">
-          {navLinks}
+        {/* תפריט ניווט */}
+        <nav className="hidden md:flex items-center gap-8 text-gray-800 font-medium">
+          <NavLink to="/" className="hover:text-yellow-600">
+            {t("navbar.home")}
+          </NavLink>
+          <NavLink to="/about" className="hover:text-yellow-600">
+            {t("navbar.about")}
+          </NavLink>
+          <CategoriesMenu onSelectCategory={handleSelectCategory} />
+          <NavLink to="/contact" className="hover:text-yellow-600">
+            {t("navbar.contact")}
+          </NavLink>
         </nav>
 
-        {/* Mobile hamburger */}
+        {/* צד שמאל – חיפוש, עגלה, שפה */}
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder={t("navbar.search") || "חיפוש..."}
+              className="border rounded px-3 py-1 text-sm focus:outline-none focus:ring focus:ring-yellow-200"
+            />
+          </div>
+
+          <Link to="/cart" className="relative text-2xl">
+            🛒
+            {count > 0 && (
+              <span className="absolute -top-2 -right-2 text-xs bg-yellow-600 text-white rounded-full px-1.5">
+                {count}
+              </span>
+            )}
+          </Link>
+
+          <LanguageSwitcher />
+        </div>
+
+        {/* תפריט מובייל */}
         <div className="md:hidden">
-          <button
-            className="text-2xl"
-            onClick={() => setMenuOpen(true)}
-          >
+          <button className="text-2xl" onClick={() => setMenuOpen(true)}>
             &#9776;
           </button>
         </div>
       </div>
 
-      {/* Mobile side drawer */}
+      {/* תפריט צד במובייל */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 ${isRTL ? "left-0" : "right-0"} h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+          menuOpen ? "translate-x-0" : isRTL ? "-translate-x-full" : "translate-x-full"
         }`}
       >
         <div className="flex justify-end p-4">
@@ -71,12 +82,21 @@ const count = useSelector(selectCartCount);
             &times;
           </button>
         </div>
-        <nav className="flex flex-col space-y-4 px-6">
-          {navLinks}
+        <nav className="flex flex-col space-y-4 px-6 text-gray-800 font-medium">
+          <NavLink to="/" onClick={() => setMenuOpen(false)}>
+            {t("navbar.home")}
+          </NavLink>
+          <NavLink to="/about" onClick={() => setMenuOpen(false)}>
+            {t("navbar.about")}
+          </NavLink>
+          <CategoriesMenu onSelectCategory={handleSelectCategory} />
+          <NavLink to="/contact" onClick={() => setMenuOpen(false)}>
+            {t("navbar.contact")}
+          </NavLink>
         </nav>
       </div>
 
-      {/* Overlay when menu is open */}
+      {/* Overlay */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 z-40"
@@ -86,4 +106,3 @@ const count = useSelector(selectCartCount);
     </header>
   );
 }
-// This component serves as the header for the application, providing navigation links and a responsive design for both desktop and mobile views.

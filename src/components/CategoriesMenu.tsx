@@ -4,6 +4,7 @@ import { categoriesTree, CategoryTreeNode } from "../types/categoriesTree";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSelectedCategoryId } from "../features/products/productsSlice";
+import { useDirection } from "../hooks/useDirection";
 
 type Props = {
   onSelectCategory?: (categoryId: string) => void;
@@ -13,6 +14,8 @@ export function CategoriesMenu({ onSelectCategory }: Props) {
   const { t } = useTranslation();
   const [rootOpen, setRootOpen] = useState(false);
   const [openPath, setOpenPath] = useState<string[]>([]);
+    const { isRTL, dir, directionClass } = useDirection();
+
   const dispatch = useDispatch();
   const handleMouseEnter = (path: string[]) => {
     setOpenPath(path);
@@ -37,6 +40,7 @@ export function CategoriesMenu({ onSelectCategory }: Props) {
     const isOpen =
       openPath.length >= newPath.length &&
       newPath.every((id, idx) => openPath[idx] === id);
+const dirClass = isRTL ? "right-full" : "left-full";
 
     return (
       <div
@@ -47,13 +51,12 @@ export function CategoriesMenu({ onSelectCategory }: Props) {
         <Link
           to={`/category/${cat.id}`}
           onClick={() => handleSelectCategory(cat.id)}
-          className="block px-4 py-1 hover:bg-pink-100 whitespace-nowrap"
+          className={`block px-4 py-1 hover:bg-pink-100 whitespace-nowrap `}
         >
           {t(`categories.${cat.id}`)}
         </Link>
-
         {hasChildren && isOpen && (
-          <div className="absolute top-0 right-full bg-white shadow rounded p-2 min-w-max z-50">
+          <div className={`absolute top-0 bg-white shadow rounded p-2 min-w-max z-50 ${dirClass}`}>
             {cat.subcategories!.map((sub) => renderCategory(sub, newPath))}
           </div>
         )}

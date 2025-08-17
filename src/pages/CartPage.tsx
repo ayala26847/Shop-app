@@ -1,15 +1,22 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../app/store";
-import { selectCartItems, setQty, removeItem, clearCart } from "../features/cart/cartSlice";
+import {
+  selectCartItems,
+  setQty,
+  removeItem,
+  clearCart,
+} from "../features/cart/cartSlice";
 import { useTranslation } from "react-i18next";
+import { useDirection } from "../hooks/useDirection";
 
 export default function CartPage() {
   const { t, i18n } = useTranslation();
   const cartItems = useSelector(selectCartItems);
-  const products = useSelector((state: RootState) => state.productsSlice.products);
+  const products = useSelector(
+    (state: RootState) => state.productsSlice.products
+  );
   const dispatch = useDispatch();
-
-  const isRTL = i18n.language === "he";
+  const { isRTL, directionClass } = useDirection();
 
   const rows = Object.entries(cartItems)
     .map(([productIdStr, qty]) => {
@@ -24,9 +31,8 @@ export default function CartPage() {
   const total = rows.reduce((sum, r) => sum + r.lineTotal, 0);
 
   // עטיפה אחידה ל־RTL/LTR
-  const directionClass = isRTL ? "rtl" : "ltr";
   const textAlignClass = isRTL ? "text-right" : "text-left";
-//   const flexDirClass = isRTL ? "flex-row-reverse" : "flex-row";
+  //   const flexDirClass = isRTL ? "flex-row-reverse" : "flex-row";
   const flexDirClass = "flex-row";
 
   if (rows.length === 0) {
@@ -89,9 +95,7 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div
-        className={`mt-6 flex items-center justify-between ${flexDirClass}`}
-      >
+      <div className={`mt-6 flex items-center justify-between ${flexDirClass}`}>
         <button
           className="border rounded px-3 py-2 hover:bg-pink-50"
           onClick={() => dispatch(clearCart())}

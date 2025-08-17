@@ -10,7 +10,9 @@
     "cart": "Cart",
     "language": "Language",
     "toggleMenu": "Toggle Menu",
-    "categories": "Categories"
+    "categories": "Categories",
+    "contact": "Contact Us",
+    "search": "Search"
   },
   "about": {
     "title": "About Us",
@@ -42,5 +44,49 @@
     "cakes": "Cakes",
     "cookies": "Cookies",
     "cheesecakes": "Cheesecakes"
+  },
+  "homepage": {
+    "badge_new": "New on site",
+    "hero_title": "All baking supplies in one place",
+    "hero_sub": "Chocolates, flours, decorations, and molds — with fast delivery."
+  },
+  "benefits": {
+    "fast_shipping": "Fast Shipping",
+    "fast_shipping_sub": "Delivered to your door within 1–3 business days",
+    "fresh_quality": "Fresh Quality",
+    "fresh_quality_sub": "A selection of top brands",
+    "support": "Customer Support",
+    "support_sub": "We're here for any questions"
+  },
+  "cta": {
+    "shop_now": "Shop Now",
+    "learn_more": "Learn More"
+  },
+  "category": {
+    "title": "Category Products",
+    "description": "Browse products in this category"
+  },
+
+  "menu": {
+    "about": "About",
+    "categories": "Categories"
+  },
+  "footer": {
+    "aboutText": "Bilingual baking supplies to take your baking to the next level ✨",
+    "links": "Links",
+    "contact": "Contact",
+    "support": "Customer Service",
+    "faq": "FAQ",
+    "shipping": "Shipping & Returns",
+    "policy": "Privacy Policy",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved."
+  },
+
+  "newsletter": {
+    "title": "Stay Updated",
+    "subtitle": "Join our mailing list for exclusive recipes, tips, and special offers",
+    "placeholder": "your@email.com",
+    "button": "Subscribe"
   }
 }

@@ -3,23 +3,18 @@ import { useTranslation } from 'react-i18next';
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
-  const changeLanguage = (lng: 'he' | 'en') => {
-    i18n.changeLanguage(lng);
+  const changeLanguage = () => {
+    const newLang = i18n.language === "he" ? "en" : "he";
+    i18n.changeLanguage(newLang);
   };
 
   return (
     <div className="flex gap-2 items-center">
-      <button
-        onClick={() => changeLanguage('he')}
-        className={`px-2 py-1 rounded ${i18n.language === 'he' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+         <button
+        onClick={changeLanguage}
+        className="px-3 py-1 border border-gray-400 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
       >
-        עברית
-      </button>
-      <button
-        onClick={() => changeLanguage('en')}
-        className={`px-2 py-1 rounded ${i18n.language === 'en' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-      >
-        English
+        {i18n.language === "he" ? "HE" : "EN"}
       </button>
     </div>
   );
