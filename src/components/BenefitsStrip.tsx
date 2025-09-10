@@ -6,7 +6,6 @@ const items = [
   { titleKey: "benefits.fresh_quality", subKey: "benefits.fresh_quality_sub" },
   { titleKey: "benefits.support", subKey: "benefits.support_sub" },
 ];
-
 export default function BenefitsStrip() {
   const { t } = useTranslation();
   return (

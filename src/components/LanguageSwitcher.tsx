@@ -12,7 +12,7 @@ export const LanguageSwitcher = () => {
     <div className="flex gap-2 items-center">
          <button
         onClick={changeLanguage}
-        className="px-3 py-1 border border-gray-400 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
+        className="px-3 py-1 border border-yellow-600 rounded-lg text-sm font-medium text-yellow-600 hover:bg-gray-100 transition"
       >
         {i18n.language === "he" ? "HE" : "EN"}
       </button>
