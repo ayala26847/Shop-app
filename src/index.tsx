@@ -7,7 +7,8 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import "./i18n";
-const container = document.getElementById("root")!;
+const container = document.getElementById('root');
+if (!container) throw new Error('Root container #root not found');
 const root = createRoot(container);
 
 root.render(
