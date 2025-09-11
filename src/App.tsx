@@ -1,4 +1,3 @@
-// src/App.tsx – הוסף מסלול הקטגוריה
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -11,9 +10,7 @@ import { Footer } from "./components/Footer";
 import Newsletter from "./components/Newsletter";
 
 export default function App() {
-  // console.log("i18n.dir():", i18n.dir());
   useEffect(() => {
-    // אם רוצים להפעיל את ה־RTL באופן דינמי, אפשר להאזין לשינוי השפה
     document.documentElement.dir = i18n.dir();
       console.log("i18n.dir():", i18n.dir());
 
