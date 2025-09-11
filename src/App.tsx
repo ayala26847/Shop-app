@@ -4,7 +4,7 @@ import AboutPage from "./pages/AboutPage";
 import CategoryPage from "./pages/CategoryPage";
 import { Header } from "./components/Header";
 import i18n from "./i18n";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import CartPage from "./pages/CartPage";
 import { Footer } from "./components/Footer";
 import Newsletter from "./components/Newsletter";

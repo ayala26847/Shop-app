@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { productsSlice, Product } from '../../types/products';
+import type { ProductsState, Product } from '../../types/products';
 import {  CategoryId } from '../../types/categories';
-const initialState: productsSlice = {
+const initialState: ProductsState = {
   products:[
   { id: 1, name: 'עוגת שוקולד', price: 25, image: '🍫', categoryIds: ['bakery', 'snacks'] },
   { id: 2, name: 'מאפין אוכמניות', price: 15, image: '🫐', categoryIds: []  },

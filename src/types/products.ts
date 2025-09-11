@@ -9,7 +9,7 @@ export interface Product {
   description?: string;
 }
 
-export interface productsSlice {
+export interface ProductsState {
   products: Product[];
   loading?: boolean;
   error?: string;
