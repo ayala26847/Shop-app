@@ -1,12 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { ProductsState, Product } from '../../types/products';
-import {  CategoryId } from '../../types/categories';
+import type { ProductsState } from '../../types/products';
 const initialState: ProductsState = {
-  products:[
-  { id: 1, name: 'עוגת שוקולד', price: 25, image: '🍫', categoryIds: ['bakery', 'snacks'] },
-  { id: 2, name: 'מאפין אוכמניות', price: 15, image: '🫐', categoryIds: []  },
-  { id: 3, name: 'לחם מחמצת', price: 20, image: '🍞', categoryIds: []  },
-]
+  products: [
+    {
+      id: 1,
+      name: 'עוגת שוקולד',
+      price: 25,
+      imageUrl: '🍫',
+      categoryIds: ['bakery', 'snacks'],
+      inStock: true,
+      rating: 4.5,
+      reviewsCount: 12,
+      discount: 10
+    },
+    {
+      id: 2,
+      name: 'מאפין אוכמניות',
+      price: 15,
+      imageUrl: '🫐',
+      categoryIds: ['bakery'],
+      inStock: true,
+      rating: 4.2,
+      reviewsCount: 8
+    },
+    {
+      id: 3,
+      name: 'לחם מחמצת',
+      price: 20,
+      imageUrl: '🍞',
+      categoryIds: ['bakery'],
+      inStock: false,
+      rating: 4.8,
+      reviewsCount: 15
+    },
+  ],
+  loading: false,
+  error: null
 }
 
 const productsSlice = createSlice({
@@ -15,6 +44,8 @@ const productsSlice = createSlice({
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
+      state.loading = false;
+      state.error = null;
     },
     addProduct: (state, action) => {
       state.products.push(action.payload);
@@ -33,9 +64,13 @@ const productsSlice = createSlice({
     },
     setError: (state, action) => {
       state.error = action.payload;
+      state.loading = false;
     },
     setSelectedCategoryId: (state, action) => {
       state.selectedCategoryId = action.payload;
+    },
+    clearError: (state) => {
+      state.error = null;
     }
   },
 });
@@ -47,6 +82,7 @@ export const {
   updateProduct,
   setLoading,
   setError,
-  setSelectedCategoryId
+  setSelectedCategoryId,
+  clearError
 } = productsSlice.actions;
 export default productsSlice.reducer;

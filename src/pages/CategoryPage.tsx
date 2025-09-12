@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
-import { ProductCard } from '../components/ProductCard';
+import { ProductCard } from '../components/ui/ProductCard';
 import { useTranslation } from 'react-i18next';
 
 export default function CategoryPage() {
@@ -14,8 +14,7 @@ export default function CategoryPage() {
   // אם רוצים להתייחס גם לתת-קטגוריות: לקבל id יחיד או id של תת־קטגוריה — זה כבר אותו סינון
   const filtered = useMemo(() => {
     if (!id) return products;
-    const catId = id.toString(); // בצד בטיחות
-    return products.filter((p) => p.categoryIds?.includes(catId as any));
+    return products.filter((product) => product.categoryIds.includes(id as any));
   }, [products, id]);
 
   return (
@@ -31,7 +30,7 @@ export default function CategoryPage() {
               key={product.id}
               name={product.name}
               price={product.price}
-              imageUrl={product.image}
+              imageUrl={product.imageUrl}
               categoryIds={product.categoryIds}
             />
           ))}

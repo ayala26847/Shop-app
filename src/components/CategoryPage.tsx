@@ -2,7 +2,7 @@
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard } from "./ui/ProductCard";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { CATEGORY_IDS } from "../types/categories";
@@ -27,7 +27,7 @@ export default function CategoryPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
           {filtered.map((p) => (
-            <ProductCard id={p.id} key={p.id} name={p.name} price={p.price} imageUrl={p.image} categoryIds={p.categoryIds} />
+            <ProductCard id={p.id} key={p.id} name={p.name} price={p.price} imageUrl={p.imageUrl} categoryIds={p.categoryIds} />
           ))}
         </div>
       )}

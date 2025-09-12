@@ -2,19 +2,46 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { LanguageSwitcher } from "../ui/LanguageSwitcher";
 import { CategoriesMenu } from "./CategoriesMenu";
 import { useSelector } from "react-redux";
-import { selectCartCount } from "../features/cart/cartSlice";
-import { useDirection } from "../hooks/useDirection";
+import { selectCartCount } from "../../store/selectors/cartSelectors";
+import { useDirection } from "../../hooks/useDirection";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const { t } = useTranslation();
   const count = useSelector(selectCartCount);
   const { isRTL, dir } = useDirection();
 
-  const handleSelectCategory = (id: string) => {
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    // Close menu on swipe left (LTR) or swipe right (RTL)
+    if ((isRTL && isRightSwipe) || (!isRTL && isLeftSwipe)) {
+      setMenuOpen(false);
+    }
+  };
+
+  const handleSelectCategory = (_id: string) => {
     setMenuOpen(false);
   };
 
@@ -67,7 +94,12 @@ export function Header() {
 
         {/* תפריט מובייל */}
         <div className="md:hidden">
-          <button className="text-2xl" onClick={() => setMenuOpen(true)}>
+          <button
+            className="text-2xl p-2 hover:bg-gray-100 rounded-lg transition-colors touch-manipulation"
+            onClick={() => setMenuOpen(true)}
+            aria-label="פתח תפריט"
+            aria-expanded={menuOpen}
+          >
             &#9776;
           </button>
         </div>
@@ -78,9 +110,16 @@ export function Header() {
         className={`fixed top-0 ${isRTL ? "left-0" : "right-0"} h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-x-0" : isRTL ? "-translate-x-full" : "translate-x-full"
         }`}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
       >
         <div className="flex justify-end p-4">
-          <button className="text-2xl" onClick={() => setMenuOpen(false)}>
+          <button
+            className="text-2xl p-2 hover:bg-gray-100 rounded-lg transition-colors touch-manipulation"
+            onClick={() => setMenuOpen(false)}
+            aria-label="סגור תפריט"
+          >
             &times;
           </button>
         </div>

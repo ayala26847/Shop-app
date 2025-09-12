@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import * as React from 'react';
 type CartState = {
   // productId -> quantity
   items: Record<number, number>;
@@ -38,8 +37,3 @@ const cartSlice = createSlice({
 
 export const { addItem, removeItem, setQty, clearCart, hydrate } = cartSlice.actions;
 export default cartSlice.reducer;
-
-// Selectors
-export const selectCartItems = (state: any) => state.cartSlice?.items as Record<number, number>;
-export const selectCartCount = (state: any) =>
-  Object.values((state.cartSlice?.items as Record<number, number>) || {})?.reduce((a, b) => a + b, 0);

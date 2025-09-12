@@ -48,6 +48,21 @@ export default [
     },
   },
   {
+    files: ['public/sw.js'],
+    languageOptions: {
+      globals: {
+        self: 'readonly',
+        caches: 'readonly',
+        fetch: 'readonly',
+        URL: 'readonly',
+        Request: 'readonly',
+        Response: 'readonly',
+        addEventListener: 'readonly',
+        postMessage: 'readonly',
+      },
+    },
+  },
+  {
     ignores: ['node_modules/**', 'dist/**', 'build/**', 'coverage/**'],
   },
 ];

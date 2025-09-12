@@ -4,15 +4,19 @@ export interface Product {
   id: number;
   name: string;
   price: number;
-  image: string;
-  categoryIds: CategoryId[];  // subCategories?: SubCategory[];
+  imageUrl: string;
+  categoryIds: CategoryId[];
   description?: string;
+  inStock: boolean;
+  rating?: number;
+  reviewsCount?: number;
+  discount?: number;
 }
 
 export interface ProductsState {
   products: Product[];
-  loading?: boolean;
-  error?: string;
+  loading: boolean;
+  error: string | null;
   selectedCategoryId?: CategoryId;
 }
 

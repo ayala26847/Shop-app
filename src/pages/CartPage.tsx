@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../app/store";
 import {
-  selectCartItems,
   setQty,
   removeItem,
   clearCart,
 } from "../features/cart/cartSlice";
+import { selectCartItems } from "../store/selectors/cartSelectors";
 import { useTranslation } from "react-i18next";
 import { useDirection } from "../hooks/useDirection";
 
@@ -19,12 +19,12 @@ export default function CartPage() {
   const { isRTL, directionClass } = useDirection();
 
   const rows = Object.entries(cartItems)
-    .map(([productIdStr, qty]) => {
+    .map(([productIdStr, qty]: [string, number]) => {
       const productId = Number(productIdStr);
       const product = products.find((p) => p.id === productId);
       if (!product) return null;
       const lineTotal = product.price * qty;
-      return { product, qty, lineTotal };
+      return { product, qty: qty as number, lineTotal };
     })
     .filter(Boolean) as { product: any; qty: number; lineTotal: number }[];
 

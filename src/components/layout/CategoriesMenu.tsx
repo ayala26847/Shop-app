@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { categoriesTree, CategoryTreeNode } from "../types/categoriesTree";
+import { categoriesTree, CategoryTreeNode } from "../../types/categoriesTree";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setSelectedCategoryId } from "../features/products/productsSlice";
-import { useDirection } from "../hooks/useDirection";
+import { setSelectedCategoryId } from "../../features/products/productsSlice";
+import { useDirection } from "../../hooks/useDirection";
 
 type Props = {
   onSelectCategory?: (categoryId: string) => void;
@@ -14,7 +14,7 @@ export function CategoriesMenu({ onSelectCategory }: Props) {
   const { t } = useTranslation();
   const [rootOpen, setRootOpen] = useState(false);
   const [openPath, setOpenPath] = useState<string[]>([]);
-    const { isRTL, dir, directionClass } = useDirection();
+    const { isRTL, dir } = useDirection();
 
   const dispatch = useDispatch();
   const handleMouseEnter = (path: string[]) => {
