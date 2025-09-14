@@ -16,7 +16,11 @@
   },
   "about": {
     "title": "About Us",
-    "description": "We are a family-owned bakery dedicated to bringing you the freshest and most delicious baked goods."
+    "description": "We are a family-owned bakery dedicated to bringing you the freshest and most delicious baked goods.",
+    "mission": "Our Mission",
+    "missionText": "We are dedicated to providing the highest quality baking supplies and ingredients to help you create amazing baked goods at home.",
+    "quality": "Quality Promise",
+    "qualityText": "Every product in our store is carefully selected to ensure freshness, quality, and the best results for your baking adventures."
   },
   "products": {
     "title": "Our Products",
@@ -60,11 +64,14 @@
   },
   "cta": {
     "shop_now": "Shop Now",
-    "learn_more": "Learn More"
+    "learn_more": "Learn More",
+    "browse_cats": "Browse Categories",
+    "add_to_cart": "Add to Cart"
   },
   "category": {
     "title": "Category Products",
-    "description": "Browse products in this category"
+    "description": "Browse products in this category",
+    "empty": "No products available in this category at the moment."
   },
 
   "menu": {
@@ -88,5 +95,24 @@
     "subtitle": "Join our mailing list for exclusive recipes, tips, and special offers",
     "placeholder": "your@email.com",
     "button": "Subscribe"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Try Again",
+    "close": "Close",
+    "open": "Open",
+    "menu": "Menu",
+    "search": "Search",
+    "price": "Price",
+    "quantity": "Quantity",
+    "featured": "Featured Products",
+    "noProducts": "No products available at the moment",
+    "productImage": "Product Image",
+    "categories": "Categories"
+  },
+  "errors": {
+    "loadingProducts": "Error loading products",
+    "genericError": "Something went wrong. Please try again."
   }
 }

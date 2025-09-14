@@ -23,7 +23,7 @@ export default function CategoryPage() {
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-4">{t(`categories.${id}`)}</h1>
       {filtered.length === 0 ? (
-        <div className="text-gray-500">{t("category.empty", "אין מוצרים בקטגוריה זו כרגע.")}</div>
+        <div className="text-gray-500">{t("category.empty")}</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
           {filtered.map((p) => (
