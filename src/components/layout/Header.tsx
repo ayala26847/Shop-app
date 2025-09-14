@@ -136,14 +136,13 @@ export function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`fixed top-0 ${isRTL ? "left-0" : "right-0"} h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-          menuOpen ? "translate-x-0" : isRTL ? "-translate-x-full" : "translate-x-full"
-        }`}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
+      {menuOpen && (
+        <div
+          className={`fixed top-0 ${isRTL ? "left-0" : "right-0"} h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out translate-x-0`}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
         {/* Mobile Menu Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div className="flex items-center space-x-2">
@@ -215,7 +214,8 @@ export function Header() {
             {t("navbar.contact")}
           </NavLink>
         </nav>
-      </div>
+        </div>
+      )}
 
       {/* Overlay */}
       {menuOpen && (
