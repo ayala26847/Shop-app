@@ -7,6 +7,8 @@ import { CategoriesMenu } from "./CategoriesMenu";
 import { useSelector } from "react-redux";
 import { selectCartCount } from "../../store/selectors/cartSelectors";
 import { useDirection } from "../../hooks/useDirection";
+import fallbackSvg from "../../logo.svg";
+import brandPng from "../../Bake_logo.png";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,6 +17,10 @@ export function Header() {
   const { t, i18n } = useTranslation();
   const count = useSelector(selectCartCount);
   const { isRTL, dir } = useDirection();
+
+  // Prefer Bake_logo.png, fall back to svg if it fails for any reason
+  const [brandLogoSrc, setBrandLogoSrc] = useState<string>(brandPng);
+  const handleLogoError = () => setBrandLogoSrc(fallbackSvg);
 
   // Close mobile menu when language changes
   useEffect(() => {
@@ -55,17 +61,19 @@ export function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2 group">
-          <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-            <span className="text-white font-bold text-lg">B</span>
-          </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-yellow-600 bg-clip-text text-transparent">
-            Bakeo
-          </span>
+        <Link to="/" className="flex items-center gap-2 group">
+          <img
+            src={brandLogoSrc}
+            onError={handleLogoError}
+            alt="Bakeo"
+            className="h-12 md:h-14 lg:h-16 w-auto object-contain mix-blend-multiply select-none pointer-events-none"
+            decoding="async"
+            loading="eager"
+          />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-8">
+        <nav className="hidden lg:flex items-center gap-8">
           <NavLink 
             to="/" 
             className="relative px-4 py-2 text-gray-700 hover:text-pink-600 font-medium transition-colors duration-200 group"
@@ -145,11 +153,14 @@ export function Header() {
         >
         {/* Mobile Menu Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-yellow-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">B</span>
-            </div>
-            <span className="text-xl font-bold text-gray-800">Bakeo</span>
+          <div className="flex items-center gap-2">
+            <img
+              src={brandLogoSrc}
+              onError={handleLogoError}
+              alt="Bakeo"
+              className="h-12 w-auto object-contain mix-blend-multiply select-none pointer-events-none"
+              decoding="async"
+            />
           </div>
           <button
             className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
