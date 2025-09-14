@@ -1,5 +1,5 @@
 // components/Header.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../ui/LanguageSwitcher";
@@ -12,9 +12,14 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const count = useSelector(selectCartCount);
   const { isRTL, dir } = useDirection();
+
+  // Close mobile menu when language changes
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [i18n.language]);
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
