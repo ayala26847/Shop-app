@@ -1,14 +1,15 @@
 // src/components/Footer.tsx
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { useDirection } from "../../hooks/useDirection";
 
 export function Footer() {
-  const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === "he";
+  const { t } = useTranslation();
+  const { isRTL, dir } = useDirection();
 
   return (
     <footer
-      dir={isRTL ? "rtl" : "ltr"}
+      dir={dir}
       className="bg-gray-900 text-gray-200 py-10 px-6 "
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
@@ -55,17 +56,17 @@ export function Footer() {
           <ul className="space-y-2 text-sm">
             <li>
               <a href="#" className="hover:text-pink-600">
-                {t("footer.faq", { defaultValue: "שאלות נפוצות" })}
+                {t("footer.faq")}
               </a>
             </li>
             <li>
               <a href="#" className="hover:text-pink-600">
-                {t("footer.shipping", { defaultValue: "משלוחים והחזרות" })}
+                {t("footer.shipping")}
               </a>
             </li>
             <li>
               <a href="#" className="hover:text-pink-600">
-                {t("footer.policy", { defaultValue: "מדיניות פרטיות" })}
+                {t("footer.policy")}
               </a>
             </li>
           </ul>
@@ -93,7 +94,7 @@ export function Footer() {
       {/* תחתון */}
       <div className="border-t border-pink-200 mt-12 pt-6 text-center text-sm text-gray-500">
         © {new Date().getFullYear()} Bakeo.{" "}
-        {t("footer.rights", { defaultValue: "כל הזכויות שמורות." })}
+        {t("footer.rights")}
       </div>
     </footer>
   );

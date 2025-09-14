@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
+import { useDirection } from "../hooks/useDirection";
 
 export default function Newsletter() {
-  const { t, i18n } = useTranslation();
-  const dir = i18n.dir(); // RTL או LTR
+  const { t } = useTranslation();
+  const { dir } = useDirection();
 
   return (
     <div
@@ -16,11 +17,11 @@ export default function Newsletter() {
         <input
           type="email"
           placeholder={t("newsletter.placeholder")!}
-          className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none"
+          className="input-field flex-1"
         />
         <button
           type="submit"
-          className="px-6 py-2 rounded-lg bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-bold hover:opacity-90 transition"
+          className="btn-primary px-6 py-2 font-bold"
         >
           {t("newsletter.button")}
         </button>

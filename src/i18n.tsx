@@ -1,4 +1,4 @@
-import i18n, { dir } from "i18next";
+import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
@@ -21,8 +21,12 @@ i18n
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
-  
     }
   });
+
+// Helper function to get direction
+export const getDirection = (language: string): "rtl" | "ltr" => {
+  return language === "he" ? "rtl" : "ltr";
+};
 
 export default i18n;
