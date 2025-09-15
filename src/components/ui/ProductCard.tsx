@@ -5,6 +5,7 @@ import { addItem } from "../../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
 import { OptimizedImage } from "./OptimizedImage";
 import { useDirection } from "../../hooks/useDirection";
+import { useLocalizedText } from "../../utils/languageUtils";
 
 type Props = { id: number; name: string; price: number; imageUrl: string; categoryIds: CategoryId[]; };
 
@@ -12,6 +13,8 @@ export function ProductCard({ id, name, price, imageUrl, categoryIds }: Props) {
   const { t } = useTranslation();
   const { dir } = useDirection();
   const dispatch = useDispatch();
+
+  const localizedName = useLocalizedText(name);
 
   const handleAddToCart = () => {
     dispatch(addItem({ productId: id, qty: 1 }));
@@ -34,7 +37,7 @@ export function ProductCard({ id, name, price, imageUrl, categoryIds }: Props) {
       <div className="image-overlay aspect-[4/3] bg-bakery-cream-50">
         <OptimizedImage
           src={imageUrl}
-          alt={`${name} - ${t("common.productImage")}`}
+          alt={`${localizedName} - ${t("common.productImage")}`}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
@@ -44,7 +47,7 @@ export function ProductCard({ id, name, price, imageUrl, categoryIds }: Props) {
           id={`product-${id}-title`}
           className="font-bold text-xl text-bakery-brown-800 line-clamp-2 mb-3 group-hover:text-bakery-brown-900 transition-colors duration-300"
         >
-          {name}
+          {localizedName}
         </h3>
         <div
           className="price-display mb-4"
@@ -68,7 +71,7 @@ export function ProductCard({ id, name, price, imageUrl, categoryIds }: Props) {
           className="w-full btn-primary text-base touch-manipulation"
           onClick={handleAddToCart}
           onKeyDown={handleKeyDown}
-          aria-label={`${t("cta.add_to_cart")} - ${name}`}
+          aria-label={`${t("cta.add_to_cart")} - ${localizedName}`}
           aria-describedby={`product-${id}-title`}
         >
           {t("cta.add_to_cart")}

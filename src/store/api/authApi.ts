@@ -466,6 +466,51 @@ export const authApi = createApi({
         }
       },
     }),
+
+    // Google OAuth Sign Up
+    googleSignUp: builder.mutation<AuthResponse, void>({
+      queryFn: async () => {
+        try {
+          const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              redirectTo: `${window.location.origin}/auth/callback`,
+              queryParams: {
+                access_type: 'offline',
+                prompt: 'consent',
+              },
+            }
+          })
+
+          if (error) {
+            return {
+              error: {
+                status: 'CUSTOM_ERROR',
+                error: handleAuthError(error),
+              },
+            }
+          }
+
+          // OAuth redirects, so we won't reach this point in normal flow
+          // This is mainly for handling the redirect callback
+          return {
+            data: {
+              success: true,
+              message: 'Redirecting to Google...',
+              user: null,
+              session: null,
+            },
+          }
+        } catch (error: any) {
+          return {
+            error: {
+              status: 'CUSTOM_ERROR',
+              error: handleAuthError(error),
+            },
+          }
+        }
+      },
+    }),
   }),
 })
 
@@ -480,4 +525,5 @@ export const {
   useUpdateProfileMutation,
   useChangePasswordMutation,
   useResendConfirmationMutation,
+  useGoogleSignUpMutation,
 } = authApi

@@ -1,6 +1,6 @@
 // components/Header.tsx
 import React, { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../ui/LanguageSwitcher";
 import { CategoriesMenu } from "./CategoriesMenu";
@@ -9,27 +9,37 @@ import { useDirection } from "../../hooks/useDirection";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSignOutMutation } from "../../store/api/authApi";
 import fallbackSvg from "../../logo.svg";
-import brandPng from "../../Bake_logo.png";
+import brandSvg from "../../Bake_logo.svg";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<'bottom' | 'top'>('bottom');
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const { t, i18n } = useTranslation();
   const { data: cartCount = 0 } = useGetCartCountQuery();
   const { isRTL, dir } = useDirection();
   const { user, loading } = useAuth();
   const [signOut] = useSignOutMutation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  // Prefer Bake_logo.png, fall back to svg if it fails for any reason
-  const [brandLogoSrc, setBrandLogoSrc] = useState<string>(brandPng);
+  // Use Bake_logo.svg, fall back to generic logo.svg if it fails for any reason
+  const [brandLogoSrc, setBrandLogoSrc] = useState<string>(brandSvg);
   const handleLogoError = () => setBrandLogoSrc(fallbackSvg);
 
   // Close mobile menu when language changes
   useEffect(() => {
     setMenuOpen(false);
   }, [i18n.language]);
+
+  // Initialize search query from URL params
+  useEffect(() => {
+    const query = searchParams.get('search') || '';
+    setSearchQuery(query);
+  }, [searchParams]);
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
@@ -69,6 +79,47 @@ export function Header() {
     }
   };
 
+  // Check viewport position and adjust dropdown position
+  const checkMenuPosition = (element: HTMLElement) => {
+    const rect = element.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
+    const menuHeight = 280; // Approximate menu height
+    const menuWidth = 256; // 64 * 4 = 256px (w-64)
+
+    // Check if menu would be cut off vertically
+    if (rect.bottom + menuHeight > viewportHeight) {
+      setMenuPosition('top');
+    } else {
+      setMenuPosition('bottom');
+    }
+
+    // For mobile, always position at top to avoid viewport issues
+    if (viewportWidth < 768) {
+      setMenuPosition('top');
+    }
+  };
+
+  const handleUserMenuToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const currentTarget = event.currentTarget;
+    if (!userMenuOpen) {
+      checkMenuPosition(currentTarget);
+    }
+    setUserMenuOpen(!userMenuOpen);
+  };
+
+  // Handle search functionality
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   // Close user menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -84,7 +135,7 @@ export function Header() {
 
   return (
     <header dir={dir} className="header-glass shadow-warm sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-3 lg:py-4 flex items-center justify-between gap-4">
         
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
@@ -92,14 +143,17 @@ export function Header() {
             src={brandLogoSrc}
             onError={handleLogoError}
             alt="Bakeo"
-            className="h-12 md:h-14 lg:h-16 w-auto object-contain mix-blend-multiply select-none pointer-events-none"
+            className="h-14 md:h-16 lg:h-20 w-auto object-contain select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
             decoding="async"
             loading="eager"
+            style={{
+              filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))'
+            }}
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav id="main-navigation" className="hidden lg:flex items-center gap-8" aria-label={t("navbar.mainNavigation")}>
+        <nav id="main-navigation" className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label={t("navbar.mainNavigation")}>
           <NavLink to="/" className="nav-link" aria-label={t("navbar.home")}>
             {t("navbar.home")}
           </NavLink>
@@ -113,9 +167,9 @@ export function Header() {
         </nav>
 
         {/* Right side - Search, Cart, Language */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4">
           {/* Search */}
-          <div className="hidden md:block relative">
+          <form onSubmit={handleSearch} className="hidden md:block relative">
             <label htmlFor="header-search" className="sr-only">
               {t("navbar.searchProducts")}
             </label>
@@ -127,23 +181,25 @@ export function Header() {
             <input
               id="header-search"
               type="search"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
               placeholder={t("navbar.search")}
               aria-label={t("navbar.searchProducts")}
-              className="w-64 pl-10 pr-4 py-2 border-2 border-bakery-cream-300 rounded-full bg-white/50 backdrop-blur-sm
+              className="w-48 lg:w-64 pl-10 pr-4 py-2 border-2 border-bakery-cream-300 rounded-full bg-white/50 backdrop-blur-sm
                          focus:outline-none focus:ring-4 focus:ring-bakery-cream-200 focus:border-bakery-brown-400
                          transition-all duration-300 placeholder-bakery-brown-400
                          hover:border-bakery-cream-400 hover:bg-white/80"
             />
-          </div>
+          </form>
 
           {/* Cart */}
-          <Link to="/cart" className="relative p-3 hover:bg-bakery-cream-50 rounded-2xl transition-all duration-300 group hover:scale-110">
+          <Link to="/cart" className="relative p-2 sm:p-3 hover:bg-bakery-cream-50 rounded-2xl transition-all duration-300 group hover:scale-110">
             <svg className="w-6 h-6 text-bakery-brown-600 group-hover:text-bakery-brown-800 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H17M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20.5 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
             </svg>
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-bakery-peach-500 to-bakery-gold-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold animate-bounce-subtle shadow-warm">
-                {cartCount}
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-bakery-peach-500 to-bakery-gold-500 text-white text-xs rounded-full h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center font-bold animate-bounce-subtle shadow-warm">
+                {cartCount > 99 ? '99+' : cartCount}
               </span>
             )}
           </Link>
@@ -158,8 +214,8 @@ export function Header() {
                 // Authenticated User Menu
                 <div className="relative">
                   <button
-                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded-full transition-colors duration-200"
+                    onClick={handleUserMenuToggle}
+                    className="flex items-center space-x-2 p-2 hover:bg-bakery-cream-50 rounded-full transition-colors duration-200"
                     aria-label={t("auth.links.account")}
                   >
                     <div className="w-10 h-10 bg-gradient-to-br from-bakery-brown-500 to-bakery-gold-500 rounded-full flex items-center justify-center shadow-warm">
@@ -179,7 +235,7 @@ export function Header() {
 
                   {/* User Dropdown Menu */}
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                    <div className={`fixed ${isRTL ? 'left-4' : 'right-4'} ${menuPosition === 'top' ? 'bottom-20' : 'top-20'} w-64 sm:w-72 bg-white rounded-xl shadow-2xl border border-bakery-cream-200 py-2 z-[9999] max-h-80 overflow-y-auto`}>
                       <div className="px-4 py-3 border-b border-gray-100">
                         <p className="text-sm font-medium text-gray-900">
                           {user.user_metadata?.full_name || 'User'}
@@ -192,10 +248,10 @@ export function Header() {
                       <div className="py-2">
                         <Link
                           to="/profile"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                          className={`flex items-center px-4 py-2 text-sm text-bakery-brown-700 hover:bg-bakery-cream-50 hover:text-bakery-brown-900 transition-colors ${isRTL ? 'flex-row-reverse text-right' : ''}`}
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-4 h-4 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
                           {t("auth.links.profile")}
@@ -203,10 +259,10 @@ export function Header() {
 
                         <Link
                           to="/orders"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                          className={`flex items-center px-4 py-2 text-sm text-bakery-brown-700 hover:bg-bakery-cream-50 hover:text-bakery-brown-900 transition-colors ${isRTL ? 'flex-row-reverse text-right' : ''}`}
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-4 h-4 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                           </svg>
                           {t("navbar.orders")}
@@ -214,21 +270,21 @@ export function Header() {
 
                         <Link
                           to="/wishlist"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                          className={`flex items-center px-4 py-2 text-sm text-bakery-brown-700 hover:bg-bakery-cream-50 hover:text-bakery-brown-900 transition-colors ${isRTL ? 'flex-row-reverse text-right' : ''}`}
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-4 h-4 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                           </svg>
                           {t("navbar.wishlist")}
                         </Link>
 
-                        <div className="border-t border-gray-100 mt-2 pt-2">
+                        <div className="border-t border-bakery-cream-200 mt-2 pt-2">
                           <button
                             onClick={handleSignOut}
-                            className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                            className={`flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors ${isRTL ? 'flex-row-reverse text-right' : ''}`}
                           >
-                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className={`w-4 h-4 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             {t("auth.buttons.signOut")}
@@ -240,16 +296,16 @@ export function Header() {
                 </div>
               ) : (
                 // Guest User - Sign In/Up Links
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 lg:space-x-3">
                   <Link
                     to="/auth/signin"
-                    className="btn-outline text-sm py-2 px-4"
+                    className="btn-outline text-xs lg:text-sm py-2 px-3 lg:px-4"
                   >
                     {t("auth.buttons.signIn")}
                   </Link>
                   <Link
                     to="/auth/signup"
-                    className="btn-primary text-sm py-2 px-4"
+                    className="btn-primary text-xs lg:text-sm py-2 px-3 lg:px-4"
                   >
                     {t("auth.buttons.signUp")}
                   </Link>
@@ -260,12 +316,12 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 hover:bg-gray-50 rounded-full transition-colors duration-200"
-            onClick={() => setMenuOpen(true)}
+            className="lg:hidden p-2 hover:bg-bakery-cream-50 rounded-full transition-colors duration-200 touch-manipulation"
+            onClick={() => setMenuOpen(!menuOpen)}
             aria-label={t("common.menu")}
             aria-expanded={menuOpen}
           >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-bakery-brown-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -275,24 +331,27 @@ export function Header() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div
-          className={`fixed top-0 ${isRTL ? "left-0" : "right-0"} h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out translate-x-0`}
+          className={`fixed top-0 ${isRTL ? "left-0" : "right-0"} h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out translate-x-0`}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
         {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+        <div className={`flex items-center justify-between p-4 sm:p-6 border-b border-gray-100 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div className="flex items-center gap-2">
             <img
               src={brandLogoSrc}
               onError={handleLogoError}
               alt="Bakeo"
-              className="h-12 w-auto object-contain mix-blend-multiply select-none pointer-events-none"
+              className="h-12 sm:h-14 w-auto object-contain select-none pointer-events-none"
               decoding="async"
+              style={{
+                filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))'
+              }}
             />
           </div>
           <button
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 touch-manipulation"
             onClick={() => setMenuOpen(false)}
             aria-label={t("common.close")}
           >
@@ -303,29 +362,32 @@ export function Header() {
         </div>
 
         {/* Mobile Search */}
-        <div className="p-6 border-b border-gray-100">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <div className="p-4 sm:p-6 border-b border-gray-100">
+          <form onSubmit={handleSearch} className="relative">
+            <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
               <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
             <input
-              type="text"
+              type="search"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
               placeholder={t("navbar.search")}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className={`w-full ${isRTL ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent`}
+              dir={dir}
             />
-          </div>
+          </form>
         </div>
 
         {/* Mobile Navigation */}
-        <nav className="flex flex-col p-6 space-y-2">
+        <nav className={`flex flex-col p-4 sm:p-6 space-y-2 ${isRTL ? 'text-right' : 'text-left'}`} dir={dir}>
           <NavLink 
             to="/" 
             onClick={() => setMenuOpen(false)}
-            className="flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium"
+            className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium touch-manipulation ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
             {t("navbar.home")}
@@ -333,9 +395,9 @@ export function Header() {
           <NavLink 
             to="/about" 
             onClick={() => setMenuOpen(false)}
-            className="flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium"
+            className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium touch-manipulation ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {t("navbar.about")}
@@ -346,9 +408,9 @@ export function Header() {
           <NavLink 
             to="/contact" 
             onClick={() => setMenuOpen(false)}
-            className="flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium"
+            className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium touch-manipulation ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             {t("navbar.contact")}

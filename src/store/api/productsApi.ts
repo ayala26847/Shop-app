@@ -57,6 +57,70 @@ export const productsApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Product', 'ProductVariant', 'Category', 'Inventory'],
   endpoints: (builder) => ({
+    // Get all categories
+    getCategories: builder.query<Category[], void>({
+      queryFn: async () => {
+        try {
+          const { data: categories, error } = await supabase
+            .from('categories')
+            .select('*')
+            .eq('is_active', true)
+            .order('display_order', { ascending: true })
+
+          if (error) {
+            return {
+              error: {
+                status: 'CUSTOM_ERROR',
+                error: handleError(error),
+              },
+            }
+          }
+
+          return { data: categories || [] }
+        } catch (error: any) {
+          return {
+            error: {
+              status: 'CUSTOM_ERROR',
+              error: handleError(error),
+            },
+          }
+        }
+      },
+      providesTags: ['Category'],
+    }),
+
+    // Get category by ID
+    getCategory: builder.query<Category, string>({
+      queryFn: async (categoryId) => {
+        try {
+          const { data: category, error } = await supabase
+            .from('categories')
+            .select('*')
+            .eq('id', categoryId)
+            .eq('is_active', true)
+            .single()
+
+          if (error) {
+            return {
+              error: {
+                status: 'CUSTOM_ERROR',
+                error: handleError(error),
+              },
+            }
+          }
+
+          return { data: category }
+        } catch (error: any) {
+          return {
+            error: {
+              status: 'CUSTOM_ERROR',
+              error: handleError(error),
+            },
+          }
+        }
+      },
+      providesTags: ['Category'],
+    }),
     // Get products with filters and pagination
     getProducts: builder.query<ProductsResponse, ProductFilters>({
       queryFn: async (filters = {}) => {
@@ -78,7 +142,7 @@ export const productsApi = createApi({
             .from('products')
             .select(`
               *,
-              product_categories!inner(
+              product_categories(
                 category:categories(*)
               ),
               variants:product_variants(
@@ -568,6 +632,8 @@ export const productsApi = createApi({
 })
 
 export const {
+  useGetCategoriesQuery,
+  useGetCategoryQuery,
   useGetProductsQuery,
   useGetProductQuery,
   useGetProductVariantsQuery,

@@ -25,7 +25,7 @@ export function EnhancedProductList({
   showVariants = false
 }: EnhancedProductListProps) {
   const { t } = useTranslation()
-  const { dir } = useDirection()
+  const { dir, isRTL } = useDirection()
   const [searchParams, setSearchParams] = useSearchParams()
 
   // Filter state
@@ -121,7 +121,7 @@ export function EnhancedProductList({
       {/* Filters */}
       {showFilters && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" dir={dir}>
             {/* Search */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -133,9 +133,10 @@ export function EnhancedProductList({
                   value={filters.search || ''}
                   onChange={(e) => updateFilters({ search: e.target.value })}
                   placeholder={t('product.searchPlaceholder')}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500"
+                  className={`w-full ${isRTL ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500`}
+                  dir={dir}
                 />
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
                   <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
@@ -155,6 +156,7 @@ export function EnhancedProductList({
                   updateFilters({ sortBy: sortBy as any, sortOrder: sortOrder as any })
                 }}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-pink-500 focus:border-pink-500"
+                dir={dir}
               >
                 <option value="created_at-desc">{t('product.sort.newest')}</option>
                 <option value="created_at-asc">{t('product.sort.oldest')}</option>
@@ -171,13 +173,14 @@ export function EnhancedProductList({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('product.priceRange')}
               </label>
-              <div className="flex items-center space-x-2">
+              <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                 <input
                   type="number"
                   value={filters.priceMin || ''}
                   onChange={(e) => updateFilters({ priceMin: e.target.value ? Number(e.target.value) : undefined })}
                   placeholder={t('product.minPrice')}
                   className="w-full border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-pink-500 focus:border-pink-500"
+                  dir={dir}
                 />
                 <span className="text-gray-500">-</span>
                 <input
@@ -186,6 +189,7 @@ export function EnhancedProductList({
                   onChange={(e) => updateFilters({ priceMax: e.target.value ? Number(e.target.value) : undefined })}
                   placeholder={t('product.maxPrice')}
                   className="w-full border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-pink-500 focus:border-pink-500"
+                  dir={dir}
                 />
               </div>
             </div>
@@ -196,26 +200,26 @@ export function EnhancedProductList({
                 {t('product.availability')}
               </label>
               <div className="space-y-2">
-                <label className="flex items-center">
+                <label className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <input
                     type="checkbox"
                     checked={filters.inStock || false}
                     onChange={(e) => updateFilters({ inStock: e.target.checked || undefined })}
                     className="rounded border-gray-300 text-pink-600 focus:ring-pink-500"
                   />
-                  <span className="ml-2 text-sm text-gray-700">
+                  <span className={`text-sm text-gray-700 ${isRTL ? 'mr-2' : 'ml-2'}`}>
                     {t('product.inStockOnly')}
                   </span>
                 </label>
                 {!featured && (
-                  <label className="flex items-center">
+                  <label className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <input
                       type="checkbox"
                       checked={filters.featured || false}
                       onChange={(e) => updateFilters({ featured: e.target.checked || undefined })}
                       className="rounded border-gray-300 text-pink-600 focus:ring-pink-500"
                     />
-                    <span className="ml-2 text-sm text-gray-700">
+                    <span className={`text-sm text-gray-700 ${isRTL ? 'mr-2' : 'ml-2'}`}>
                       {t('product.featuredOnly')}
                     </span>
                   </label>
@@ -247,12 +251,12 @@ export function EnhancedProductList({
       )}
 
       {/* Results Summary */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600">
+      <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <p className="text-sm text-gray-600" dir={dir}>
           {t('product.resultsCount', { count: total, showing: products.length })}
         </p>
         {filters.search && (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600" dir={dir}>
             {t('product.searchResults', { query: filters.search })}
           </p>
         )}

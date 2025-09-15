@@ -1,61 +1,67 @@
--- =============================================
+-- ============================================================================
 -- E-COMMERCE DATABASE SCHEMA FOR SUPABASE
--- =============================================
+-- ============================================================================
+-- This schema creates all necessary tables for a full-featured e-commerce application
+-- with multi-language support (Hebrew/English) and RTL compatibility
+--
+-- Execute this script in your Supabase SQL Editor to create all tables
+-- ============================================================================
 
--- Enable necessary extensions
+-- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- =============================================
--- 1. USERS & AUTHENTICATION
--- =============================================
-
--- User profiles (extends auth.users)
-CREATE TABLE public.user_profiles (
-  id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-  email TEXT NOT NULL,
-  full_name TEXT,
-  phone TEXT,
-  date_of_birth DATE,
-  avatar_url TEXT,
-  marketing_consent BOOLEAN DEFAULT false,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- ============================================================================
+-- USER PROFILES TABLE
+-- ============================================================================
+-- Extends Supabase Auth users with additional profile information
+CREATE TABLE IF NOT EXISTS public.user_profiles (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    email TEXT NOT NULL UNIQUE,
+    full_name TEXT,
+    phone TEXT,
+    date_of_birth TEXT, -- Changed to TEXT to match TypeScript types
+    avatar_url TEXT,
+    marketing_consent BOOLEAN DEFAULT false,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- User addresses
-CREATE TABLE public.user_addresses (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES public.user_profiles(id) ON DELETE CASCADE NOT NULL,
-  type TEXT CHECK (type IN ('billing', 'shipping')) NOT NULL,
-  is_default BOOLEAN DEFAULT false,
-  full_name TEXT NOT NULL,
-  company TEXT,
-  address_line_1 TEXT NOT NULL,
-  address_line_2 TEXT,
-  city TEXT NOT NULL,
-  state_province TEXT NOT NULL,
-  postal_code TEXT NOT NULL,
-  country TEXT NOT NULL DEFAULT 'IL',
-  phone TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- ============================================================================
+-- USER ADDRESSES TABLE
+-- ============================================================================
+-- Stores billing and shipping addresses for users
+CREATE TABLE IF NOT EXISTS public.user_addresses (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES public.user_profiles(id) ON DELETE CASCADE,
+    type TEXT NOT NULL CHECK (type IN ('billing', 'shipping')),
+    is_default BOOLEAN DEFAULT false,
+    full_name TEXT NOT NULL,
+    company TEXT,
+    address_line_1 TEXT NOT NULL,
+    address_line_2 TEXT,
+    city TEXT NOT NULL,
+    state_province TEXT NOT NULL,
+    postal_code TEXT NOT NULL,
+    country TEXT DEFAULT 'Israel',
+    phone TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- =============================================
--- 2. PRODUCT CATALOG
--- =============================================
-
--- Categories (hierarchical support)
-CREATE TABLE public.categories (
-  id TEXT PRIMARY KEY,
-  name_key TEXT NOT NULL, -- for i18n
-  description TEXT,
-  parent_id TEXT REFERENCES public.categories(id) ON DELETE CASCADE,
-  image_url TEXT,
-  display_order INTEGER DEFAULT 0,
-  is_active BOOLEAN DEFAULT true,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- ============================================================================
+-- CATEGORIES TABLE
+-- ============================================================================
+-- Product categories with hierarchical structure and i18n support
+CREATE TABLE IF NOT EXISTS public.categories (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- Changed to UUID to match TypeScript
+    name_key TEXT NOT NULL UNIQUE, -- i18n key for category names
+    description TEXT,
+    parent_id UUID REFERENCES public.categories(id) ON DELETE SET NULL,
+    image_url TEXT,
+    display_order INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Products
