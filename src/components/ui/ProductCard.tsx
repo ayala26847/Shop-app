@@ -26,37 +26,37 @@ export function ProductCard({ id, name, price, imageUrl, categoryIds }: Props) {
 
   return (
     <article
-      className="group card overflow-hidden hover:shadow-lg transition-all duration-300 touch-manipulation focus-within:ring-2 focus-within:ring-pink-500 focus-within:ring-offset-2"
+      className="group product-card touch-manipulation"
       role="article"
       aria-labelledby={`product-${id}-title`}
       aria-describedby={`product-${id}-description`}
     >
-      <div className="aspect-[4/3] overflow-hidden bg-gray-50">
+      <div className="image-overlay aspect-[4/3] bg-bakery-cream-50">
         <OptimizedImage
           src={imageUrl}
           alt={`${name} - ${t("common.productImage")}`}
-          className="group-hover:scale-[1.02] transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
-      <div className="p-4">
+      <div className="p-6">
         <h3
           id={`product-${id}-title`}
-          className="font-semibold text-lg line-clamp-2 mb-2"
+          className="font-bold text-xl text-bakery-brown-800 line-clamp-2 mb-3 group-hover:text-bakery-brown-900 transition-colors duration-300"
         >
           {name}
         </h3>
         <div
-          className="mt-1 text-gray-500 font-medium"
+          className="price-display mb-4"
           aria-label={`${t("common.price")}: ${price.toFixed(2)} ₪`}
         >
           {price.toFixed(2)} ₪
         </div>
-        <div className="mt-2 flex flex-wrap gap-1" role="list" aria-label={t("common.categories")}>
+        <div className="mb-4 flex flex-wrap gap-2" role="list" aria-label={t("common.categories")}>
           {categoryIds.map((categoryId) => (
             <span
               key={categoryId}
-              className="text-xs px-2 py-1 rounded-full bg-pink-50 text-pink-700 border border-pink-100"
+              className="category-chip"
               role="listitem"
               aria-label={`${t("common.categories")}: ${t(`categories.${categoryId}`)}`}
             >
@@ -65,7 +65,7 @@ export function ProductCard({ id, name, price, imageUrl, categoryIds }: Props) {
           ))}
         </div>
         <button
-          className="w-full mt-4 btn-primary py-3 text-base font-medium touch-manipulation"
+          className="w-full btn-primary text-base touch-manipulation"
           onClick={handleAddToCart}
           onKeyDown={handleKeyDown}
           aria-label={`${t("cta.add_to_cart")} - ${name}`}

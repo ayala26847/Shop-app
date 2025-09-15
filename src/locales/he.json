@@ -12,7 +12,9 @@
     "toggleMenu": "הפעל/כבה תפריט",
     "categories": "קטגוריות",
     "contact": "צור קשר",
-    "search": "חיפוש"
+    "search": "חיפוש",
+    "orders": "ההזמנות שלי",
+    "wishlist": "רשימת המשאלות"
   },
   "about": {
     "title": "אודותינו",
@@ -29,12 +31,31 @@
   },
   "cart": {
     "title": "עגלת הקניות שלך",
-    "empty": "עגלת הקניות שלך ריקה.",
+    "empty": "עגלת הקניות שלך ריקה",
+    "emptyDescription": "הוסיפו מוצרי אפייה טעימים כדי להתחיל!",
     "checkout": "המשך לתשלום",
     "add": "הוסף לעגלה",
     "remove": "הסר",
     "clear": "נקה עגלה",
-    "total": "סה\"כ"
+    "total": "סה\"כ",
+    "orderSummary": "סיכום הזמנה",
+    "items": "פריטים",
+    "shipping": "משלוח",
+    "freeShipping": "חינם",
+    "freeShippingThreshold": "הוסיפו {{amount}} ₪ נוספים למשלוח חינם",
+    "continueShopping": "המשיכו לקניות",
+    "secureCheckout": "הצפנת SSL מאובטחת 256-bit",
+    "easyReturns": "החזרות קלות תוך 30 יום",
+    "outOfStock": "אזל מהמלאי",
+    "limitedStock": "נותרו רק {{available}} במלאי",
+    "unavailableItems": "חלק מהפריטים אינם זמינים יותר",
+    "unavailableDescription": "אנא הסירו או עדכנו פריטים אלו כדי להמשיך",
+    "fixItemsToCheckout": "תקנו פריטים כדי להמשיך לתשלום",
+    "loadError": "שגיאה בטעינת העגלה",
+    "confirmClear": "האם אתם בטוחים שברצונכם לנקות את העגלה?",
+    "increaseQuantity": "הגדל כמות",
+    "decreaseQuantity": "הקטן כמות",
+    "removeItem": "הסר {{item}} מהעגלה"
   },
   "categories": {
     "bakery": "חומרי אפייה",
@@ -96,6 +117,7 @@
   },
   "common": {
     "loading": "טוען...",
+    "adding": "מוסיף...",
     "error": "שגיאה",
     "retry": "נסה שוב",
     "close": "סגור",
@@ -107,10 +129,140 @@
     "featured": "מוצרים נבחרים",
     "noProducts": "אין מוצרים זמינים כרגע",
     "productImage": "תמונת מוצר",
-    "categories": "קטגוריות"
+    "categories": "קטגוריות",
+    "optional": "אופציונלי",
+    "more": "נוספים",
+    "and": "ו"
   },
   "errors": {
     "loadingProducts": "שגיאה בטעינת המוצרים",
     "genericError": "משהו השתבש. אנא נסה שוב."
+  },
+  "auth": {
+    "signIn": {
+      "title": "התחברות",
+      "subtitle": "ברוכים השבים! אנא התחברו לחשבונכם",
+      "welcome": "ברוכים השבים",
+      "description": "התחברו לחשבונכם כדי להמשיך",
+      "noAccount": "אין לכם חשבון?"
+    },
+    "signUp": {
+      "title": "יצירת חשבון",
+      "subtitle": "הצטרפו אלינו היום והתחילו את מסע האפייה שלכם",
+      "welcome": "הצטרפו ל-Bakeo",
+      "description": "צרו חשבון כדי להתחיל",
+      "hasAccount": "כבר יש לכם חשבון?",
+      "termsText": "על ידי יצירת חשבון, אתם מסכימים ל",
+      "benefits": {
+        "title": "למה להצטרף ל-Bakeo?",
+        "fastCheckout": "תשלום מהיר ובטוח",
+        "orderHistory": "מעקב אחר היסטוריית ההזמנות",
+        "exclusiveOffers": "קבלו הצעות והנחות בלעדיות",
+        "wishlist": "שמרו פריטים ברשימת המשאלות"
+      }
+    },
+    "fields": {
+      "email": "כתובת אימייל",
+      "password": "סיסמה",
+      "confirmPassword": "אימות סיסמה",
+      "fullName": "שם מלא",
+      "phone": "מספר טלפון",
+      "rememberMe": "זכור אותי",
+      "marketingConsent": "אני רוצה לקבל אימיילי שיווק על מוצרים חדשים והצעות מיוחדות"
+    },
+    "placeholders": {
+      "email": "הזינו את כתובת האימייל שלכם",
+      "password": "הזינו את הסיסמה שלכם",
+      "confirmPassword": "אמתו את הסיסמה שלכם",
+      "fullName": "הזינו את השם המלא שלכם",
+      "phone": "הזינו את מספר הטלפון שלכם"
+    },
+    "buttons": {
+      "signIn": "התחברות",
+      "signUp": "צרו חשבון",
+      "signOut": "התנתקות",
+      "forgotPassword": "איפוס סיסמה",
+      "resetPassword": "עדכון סיסמה",
+      "changePassword": "שינוי סיסמה",
+      "updateProfile": "עדכון פרופיל",
+      "resendEmail": "שלחו מייל שוב"
+    },
+    "links": {
+      "signIn": "התחברות",
+      "signUp": "הרשמה",
+      "forgotPassword": "שכחתם את הסיסמה?",
+      "backToSignIn": "חזרה להתחברות",
+      "profile": "הפרופיל שלי",
+      "account": "הגדרות חשבון"
+    },
+    "password": {
+      "veryWeak": "חלש מאוד",
+      "weak": "חלש",
+      "fair": "סביר",
+      "good": "טוב",
+      "strong": "חזק"
+    },
+    "divider": {
+      "orContinueWith": "או המשיכו עם"
+    },
+    "errors": {
+      "signInFailed": "ההתחברות נכשלה. אנא בדקו את פרטי ההתחברות.",
+      "signUpFailed": "יצירת החשבון נכשלה. אנא נסו שוב.",
+      "passwordResetFailed": "איפוס הסיסמה נכשל. אנא נסו שוב.",
+      "profileUpdateFailed": "עדכון הפרופיל נכשל. אנא נסו שוב.",
+      "sessionExpired": "תוקף ההתחברות פג. אנא התחברו שוב.",
+      "emailNotVerified": "אנא אמתו את כתובת האימייל שלכם כדי להמשיך.",
+      "invalidCredentials": "אימייל או סיסמה שגויים.",
+      "accountExists": "כבר קיים חשבון עם כתובת אימייל זו.",
+      "weakPassword": "הסיסמה חלשה מדי. אנא בחרו סיסמה חזקה יותר.",
+      "networkError": "שגיאת רשת. אנא בדקו את החיבור שלכם ונסו שוב."
+    },
+    "success": {
+      "signInSuccess": "התחברתם בהצלחה!",
+      "signUpSuccess": "החשבון נוצר בהצלחה!",
+      "signOutSuccess": "התנתקתם בהצלחה!",
+      "passwordResetSent": "מייל איפוס סיסמה נשלח!",
+      "passwordUpdated": "הסיסמה עודכנה בהצלחה!",
+      "profileUpdated": "הפרופיל עודכן בהצלחה!",
+      "emailVerified": "האימייל אומת בהצלחה!"
+    }
+  },
+  "legal": {
+    "terms": "תנאי השימוש",
+    "privacy": "מדיניות פרטיות"
+  },
+  "product": {
+    "outOfStock": "אזל מהמלאי",
+    "lowStock": "נותרו רק {{count}}",
+    "quickView": "צפייה מהירה",
+    "priceFrom": "החל מ",
+    "selectVariant": "בחרו אפשרות",
+    "baseProduct": "סטנדרטי",
+    "quantity": "כמות",
+    "stockAvailable": "{{count}} במלאי",
+    "featured": "מומלץ",
+    "searchPlaceholder": "חפשו מוצרים...",
+    "sortBy": "מיין לפי",
+    "sort": {
+      "newest": "החדשים ביותר",
+      "oldest": "הישנים ביותר",
+      "nameAZ": "שם א-ת",
+      "nameZA": "שם ת-א",
+      "priceLowHigh": "מחיר: נמוך לגבוה",
+      "priceHighLow": "מחיר: גבוה לנמוך",
+      "rating": "הכי מדורגים"
+    },
+    "priceRange": "טווח מחירים",
+    "minPrice": "מינימום",
+    "maxPrice": "מקסימום",
+    "availability": "זמינות",
+    "inStockOnly": "רק במלאי",
+    "featuredOnly": "רק מומלצים",
+    "clearFilters": "נקה כל הסינונים",
+    "resultsCount": "מציג {{showing}} מתוך {{count}} מוצרים",
+    "searchResults": "תוצאות עבור \"{{query}}\"",
+    "noProducts": "לא נמצאו מוצרים",
+    "noProductsDescription": "נסו לשנות את קריטריוני החיפוש או הסינון",
+    "loadMore": "טען מוצרים נוספים"
   }
 }

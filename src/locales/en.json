@@ -12,7 +12,9 @@
     "toggleMenu": "Toggle Menu",
     "categories": "Categories",
     "contact": "Contact Us",
-    "search": "Search"
+    "search": "Search",
+    "orders": "My Orders",
+    "wishlist": "Wishlist"
   },
   "about": {
     "title": "About Us",
@@ -29,12 +31,31 @@
   },
   "cart": {
     "title": "Your Cart",
-    "empty": "Your cart is empty.",
+    "empty": "Your cart is empty",
+    "emptyDescription": "Add some delicious baking items to get started!",
     "checkout": "Proceed to Checkout",
     "add": "Add to cart",
     "remove": "Remove",
     "clear": "Clear cart",
-    "total": "Total"
+    "total": "Total",
+    "orderSummary": "Order Summary",
+    "items": "Items",
+    "shipping": "Shipping",
+    "freeShipping": "Free",
+    "freeShippingThreshold": "Add ₪{{amount}} more for free shipping",
+    "continueShopping": "Continue Shopping",
+    "secureCheckout": "Secure 256-bit SSL encryption",
+    "easyReturns": "Easy 30-day returns",
+    "outOfStock": "Out of stock",
+    "limitedStock": "Only {{available}} left in stock",
+    "unavailableItems": "Some items are no longer available",
+    "unavailableDescription": "Please remove or update these items to continue",
+    "fixItemsToCheckout": "Fix items to checkout",
+    "loadError": "Error loading cart",
+    "confirmClear": "Are you sure you want to clear your cart?",
+    "increaseQuantity": "Increase quantity",
+    "decreaseQuantity": "Decrease quantity",
+    "removeItem": "Remove {{item}} from cart"
   },
   "categories": {
     "bakery": "Bakery",
@@ -98,6 +119,7 @@
   },
   "common": {
     "loading": "Loading...",
+    "adding": "Adding...",
     "error": "Error",
     "retry": "Try Again",
     "close": "Close",
@@ -109,10 +131,140 @@
     "featured": "Featured Products",
     "noProducts": "No products available at the moment",
     "productImage": "Product Image",
-    "categories": "Categories"
+    "categories": "Categories",
+    "optional": "optional",
+    "more": "more",
+    "and": "and"
   },
   "errors": {
     "loadingProducts": "Error loading products",
     "genericError": "Something went wrong. Please try again."
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign In",
+      "subtitle": "Welcome back! Please sign in to your account",
+      "welcome": "Welcome Back",
+      "description": "Sign in to your account to continue",
+      "noAccount": "Don't have an account?"
+    },
+    "signUp": {
+      "title": "Create Account",
+      "subtitle": "Join us today and start your baking journey",
+      "welcome": "Join Bakeo",
+      "description": "Create your account to get started",
+      "hasAccount": "Already have an account?",
+      "termsText": "By creating an account, you agree to our",
+      "benefits": {
+        "title": "Why Join Bakeo?",
+        "fastCheckout": "Fast and secure checkout",
+        "orderHistory": "Track your order history",
+        "exclusiveOffers": "Get exclusive offers and discounts",
+        "wishlist": "Save items to your wishlist"
+      }
+    },
+    "fields": {
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "rememberMe": "Remember me",
+      "marketingConsent": "I want to receive marketing emails about new products and special offers"
+    },
+    "placeholders": {
+      "email": "Enter your email address",
+      "password": "Enter your password",
+      "confirmPassword": "Confirm your password",
+      "fullName": "Enter your full name",
+      "phone": "Enter your phone number"
+    },
+    "buttons": {
+      "signIn": "Sign In",
+      "signUp": "Create Account",
+      "signOut": "Sign Out",
+      "forgotPassword": "Reset Password",
+      "resetPassword": "Update Password",
+      "changePassword": "Change Password",
+      "updateProfile": "Update Profile",
+      "resendEmail": "Resend Email"
+    },
+    "links": {
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "forgotPassword": "Forgot your password?",
+      "backToSignIn": "Back to Sign In",
+      "profile": "My Profile",
+      "account": "Account Settings"
+    },
+    "password": {
+      "veryWeak": "Very Weak",
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "divider": {
+      "orContinueWith": "Or continue with"
+    },
+    "errors": {
+      "signInFailed": "Sign in failed. Please check your credentials.",
+      "signUpFailed": "Account creation failed. Please try again.",
+      "passwordResetFailed": "Password reset failed. Please try again.",
+      "profileUpdateFailed": "Profile update failed. Please try again.",
+      "sessionExpired": "Your session has expired. Please sign in again.",
+      "emailNotVerified": "Please verify your email address to continue.",
+      "invalidCredentials": "Invalid email or password.",
+      "accountExists": "An account with this email already exists.",
+      "weakPassword": "Password is too weak. Please choose a stronger password.",
+      "networkError": "Network error. Please check your connection and try again."
+    },
+    "success": {
+      "signInSuccess": "Successfully signed in!",
+      "signUpSuccess": "Account created successfully!",
+      "signOutSuccess": "Successfully signed out!",
+      "passwordResetSent": "Password reset email sent!",
+      "passwordUpdated": "Password updated successfully!",
+      "profileUpdated": "Profile updated successfully!",
+      "emailVerified": "Email verified successfully!"
+    }
+  },
+  "legal": {
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy"
+  },
+  "product": {
+    "outOfStock": "Out of Stock",
+    "lowStock": "Only {{count}} left",
+    "quickView": "Quick View",
+    "priceFrom": "Starting from",
+    "selectVariant": "Select Option",
+    "baseProduct": "Standard",
+    "quantity": "Quantity",
+    "stockAvailable": "{{count}} in stock",
+    "featured": "Featured",
+    "searchPlaceholder": "Search products...",
+    "sortBy": "Sort by",
+    "sort": {
+      "newest": "Newest First",
+      "oldest": "Oldest First",
+      "nameAZ": "Name A-Z",
+      "nameZA": "Name Z-A",
+      "priceLowHigh": "Price: Low to High",
+      "priceHighLow": "Price: High to Low",
+      "rating": "Best Rated"
+    },
+    "priceRange": "Price Range",
+    "minPrice": "Min",
+    "maxPrice": "Max",
+    "availability": "Availability",
+    "inStockOnly": "In stock only",
+    "featuredOnly": "Featured only",
+    "clearFilters": "Clear all filters",
+    "resultsCount": "Showing {{showing}} of {{count}} products",
+    "searchResults": "Results for \"{{query}}\"",
+    "noProducts": "No products found",
+    "noProductsDescription": "Try adjusting your search or filter criteria",
+    "loadMore": "Load More Products"
   }
 }
