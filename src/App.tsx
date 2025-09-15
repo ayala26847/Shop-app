@@ -8,12 +8,19 @@ import { LoadingSpinner } from "./components/ui/LoadingSpinner";
 import { ErrorBoundary } from "./components/ui/ErrorBoundary";
 import { useWebVitals } from "./hooks/usePerformanceMonitor";
 import { useDirection } from "./hooks/useDirection";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ToastProvider } from "./contexts/ToastContext";
+import SkipLinks from "./components/ui/SkipLinks";
 
 // Lazy load pages for better performance
 const HomePage = lazy(() => import("./pages/HomePage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
+
+// Lazy load auth pages
+const SignInPage = lazy(() => import("./pages/auth/SignInPage"));
+const SignUpPage = lazy(() => import("./pages/auth/SignUpPage"));
 
 // Loading fallback component
 const PageFallback = () => {
@@ -40,24 +47,33 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <div
-        dir={dir}
-        className="min-h-screen bg-neutral-50 text-neutral-900"
-      >
-        <Header />
-        <main>
-          <Suspense fallback={<PageFallback />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/category/:id" element={<CategoryPage />} />
-            </Routes>
-          </Suspense>
-        </main>
-        <Newsletter />
-        <Footer />
-      </div>
+      <ToastProvider>
+        <AuthProvider>
+          <div
+            dir={dir}
+            className="min-h-screen bg-gradient-to-br from-bakery-cream-50 via-white to-bakery-cream-100 text-neutral-700"
+          >
+            <SkipLinks />
+            <Header />
+            <main id="main-content" role="main" tabIndex={-1}>
+              <Suspense fallback={<PageFallback />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/category/:id" element={<CategoryPage />} />
+
+                  {/* Authentication Routes */}
+                  <Route path="/auth/signin" element={<SignInPage />} />
+                  <Route path="/auth/signup" element={<SignUpPage />} />
+                </Routes>
+              </Suspense>
+            </main>
+            <Newsletter />
+            <Footer />
+          </div>
+        </AuthProvider>
+      </ToastProvider>
     </ErrorBoundary>
   );
 }

@@ -1,4 +1,3 @@
-const CACHE_NAME = 'bakeo-v1.0.0';
 const STATIC_CACHE_NAME = 'bakeo-static-v1.0.0';
 const DYNAMIC_CACHE_NAME = 'bakeo-dynamic-v1.0.0';
 

@@ -1,18 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles for better RTL support and mobile experience */
+/* Bakery Premium Design System */
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
-  
+
   body {
-    font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, #fefdf9 0%, #fdf9f0 100%);
+    color: #404040;
+    line-height: 1.6;
+  }
+
+  /* Premium typography styles */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    color: #262626;
+    letter-spacing: -0.025em;
+  }
+
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+  h5 { font-size: 1.125rem; }
+  h6 { font-size: 1rem; }
+
+  /* Enhanced selection styles */
+  ::selection {
+    background: rgba(232, 197, 133, 0.3);
+    color: #8b6332;
+  }
+
+  ::-moz-selection {
+    background: rgba(232, 197, 133, 0.3);
+    color: #8b6332;
   }
   
   /* RTL specific styles */
@@ -111,24 +143,195 @@
     outline: 2px solid transparent;
     outline-offset: 2px;
   }
-  
+
   *:focus-visible {
-    outline: 2px solid #ec4899;
+    outline: 2px solid #b8825a;
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(232, 197, 133, 0.3);
+  }
+
+  /* Performance optimizations */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Reduce animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .btn-primary {
+      border: 2px solid;
+    }
+
+    .nav-link::after {
+      display: none;
+    }
   }
 }
 
 @layer components {
-  /* Custom component styles */
+  /* Premium Bakery Component System */
+
+  /* Primary button with warm bakery gradient */
   .btn-primary {
-    @apply bg-gradient-to-r from-pink-500 to-yellow-500 text-white font-semibold py-2 px-4 rounded-lg hover:from-pink-600 hover:to-yellow-600 transition-all duration-200 shadow-lg hover:shadow-xl;
+    @apply bg-gradient-to-br from-bakery-brown-500 via-bakery-peach-500 to-bakery-gold-500
+           text-white font-semibold py-3 px-6 rounded-2xl
+           hover:from-bakery-brown-600 hover:via-bakery-peach-600 hover:to-bakery-gold-600
+           transition-all duration-300 shadow-warm hover:shadow-large
+           hover:scale-[1.02] active:scale-[0.98]
+           focus:ring-4 focus:ring-bakery-cream-300 focus:outline-none;
   }
-  
-  .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200;
+
+  /* Secondary button with cream tones */
+  .btn-secondary {
+    @apply bg-gradient-to-br from-bakery-cream-100 to-bakery-cream-200
+           text-bakery-brown-700 font-medium py-3 px-6 rounded-2xl border border-bakery-cream-300
+           hover:from-bakery-cream-200 hover:to-bakery-cream-300 hover:border-bakery-cream-400
+           transition-all duration-300 shadow-soft hover:shadow-medium
+           hover:scale-[1.02] active:scale-[0.98]
+           focus:ring-4 focus:ring-bakery-cream-200 focus:outline-none;
   }
-  
+
+  /* Outline button for less prominent actions */
+  .btn-outline {
+    @apply border-2 border-bakery-brown-300 text-bakery-brown-600 font-medium py-3 px-6 rounded-2xl
+           hover:bg-bakery-brown-50 hover:border-bakery-brown-400 hover:text-bakery-brown-700
+           transition-all duration-300 shadow-soft hover:shadow-medium
+           hover:scale-[1.02] active:scale-[0.98]
+           focus:ring-4 focus:ring-bakery-brown-200 focus:outline-none;
+  }
+
+  /* Premium product card */
+  .product-card {
+    @apply bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft border border-bakery-cream-200
+           hover:shadow-warm hover:border-bakery-cream-300 hover:bg-white
+           transition-all duration-300 overflow-hidden
+           hover:scale-[1.02] hover:-translate-y-1
+           focus-within:ring-4 focus-within:ring-bakery-cream-300 focus-within:outline-none;
+  }
+
+  /* Enhanced input fields */
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-3 border-2 border-bakery-cream-300 rounded-2xl
+           bg-white/50 backdrop-blur-sm
+           focus:outline-none focus:ring-4 focus:ring-bakery-cream-200 focus:border-bakery-brown-400
+           transition-all duration-300 placeholder-bakery-brown-400
+           hover:border-bakery-cream-400 hover:bg-white/80;
+  }
+
+  /* Premium form container */
+  .form-container {
+    @apply bg-white/90 backdrop-blur-md rounded-3xl shadow-large border border-bakery-cream-200 p-8;
+  }
+
+  /* Feature card for benefits/highlights */
+  .feature-card {
+    @apply bg-gradient-to-br from-bakery-cream-50 to-bakery-cream-100
+           rounded-2xl p-6 border border-bakery-cream-200
+           hover:from-bakery-cream-100 hover:to-bakery-cream-200 hover:border-bakery-cream-300
+           transition-all duration-300 shadow-soft hover:shadow-medium
+           hover:scale-[1.02] hover:-translate-y-0.5;
+  }
+
+  /* Navigation link styles */
+  .nav-link {
+    @apply relative px-4 py-2 text-bakery-brown-700 hover:text-bakery-brown-900
+           font-medium transition-all duration-300 rounded-xl
+           hover:bg-bakery-cream-50 group;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-bakery-peach-500 to-bakery-gold-500
+           transition-all duration-300 group-hover:w-full group-hover:left-0;
+    content: '';
+  }
+
+  /* Category chip styles */
+  .category-chip {
+    @apply inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full
+           bg-bakery-blush-50 text-bakery-blush-700 border border-bakery-blush-200
+           hover:bg-bakery-blush-100 hover:border-bakery-blush-300
+           transition-all duration-200 cursor-pointer
+           hover:scale-105 active:scale-95;
+  }
+
+  /* Loading spinner styles */
+  .spinner {
+    @apply animate-spin w-6 h-6 border-3 border-bakery-cream-300 border-t-bakery-brown-500 rounded-full;
+  }
+
+  /* Toast notification styles */
+  .toast {
+    @apply bg-white/95 backdrop-blur-md border border-bakery-cream-200 rounded-2xl shadow-large p-4
+           animate-slide-up;
+  }
+
+  .toast-success {
+    @apply border-l-4 border-l-accent-success bg-green-50/95;
+  }
+
+  .toast-error {
+    @apply border-l-4 border-l-accent-error bg-red-50/95;
+  }
+
+  /* Modal overlay */
+  .modal-overlay {
+    @apply fixed inset-0 bg-bakery-brown-900/20 backdrop-blur-sm z-50 animate-fade-in;
+  }
+
+  /* Modal content */
+  .modal-content {
+    @apply bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border border-bakery-cream-200
+           animate-scale-in;
+  }
+
+  /* Header with glassmorphism effect */
+  .header-glass {
+    @apply bg-white/95 backdrop-blur-md border-b border-bakery-cream-200;
+  }
+
+  /* Skeleton loading animation */
+  .skeleton {
+    @apply bg-gradient-to-r from-bakery-cream-200 via-bakery-cream-300 to-bakery-cream-200
+           bg-[length:200%_100%] animate-shimmer rounded-2xl;
+  }
+
+  /* Price display styling */
+  .price-display {
+    @apply text-2xl font-bold bg-gradient-to-r from-bakery-brown-600 to-bakery-gold-600
+           bg-clip-text text-transparent;
+  }
+
+  /* Badge styles */
+  .badge-new {
+    @apply bg-gradient-to-r from-bakery-peach-500 to-bakery-gold-500 text-white
+           text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide;
+  }
+
+  .badge-sale {
+    @apply bg-gradient-to-r from-red-500 to-pink-500 text-white
+           text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide animate-pulse-soft;
+  }
+
+  /* Image container with overlay effects */
+  .image-overlay {
+    @apply relative overflow-hidden rounded-2xl;
+  }
+
+  .image-overlay::after {
+    @apply absolute inset-0 bg-gradient-to-t from-bakery-brown-900/20 to-transparent
+           opacity-0 hover:opacity-100 transition-opacity duration-300;
+    content: '';
   }
 }
