@@ -104,8 +104,8 @@ export function SignUpForm({ onSuccess, redirectTo }: SignUpFormProps) {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 border border-gray-100">
+    <div className="w-full max-w-md mx-auto px-4 sm:px-0">
+      <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 border border-gray-100 mx-auto">
         <div className="text-center mb-6 sm:mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             {t('auth.signUp.title')}
@@ -358,7 +358,7 @@ export function SignUpForm({ onSuccess, redirectTo }: SignUpFormProps) {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full btn-primary ${isLoading ? 'btn-disabled' : ''}`}
+            className={`w-full btn-primary min-h-[48px] ${isLoading ? 'btn-disabled' : ''}`}
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
@@ -387,7 +387,7 @@ export function SignUpForm({ onSuccess, redirectTo }: SignUpFormProps) {
             type="button"
             onClick={handleGoogleSignUp}
             disabled={isGoogleLoading}
-            className={`w-full btn-outline ${isGoogleLoading ? 'btn-disabled' : ''} ${isRTL ? 'flex-row-reverse' : ''}`}
+            className={`w-full btn-outline min-h-[48px] ${isGoogleLoading ? 'btn-disabled' : ''} ${isRTL ? 'flex-row-reverse' : ''}`}
             dir={dir}
           >
             {!isGoogleLoading && (

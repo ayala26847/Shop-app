@@ -138,26 +138,45 @@ export const productsApi = createApi({
             limit = 12
           } = filters
 
-          let query = supabase
-            .from('products')
-            .select(`
-              *,
-              product_categories(
-                category:categories(*)
-              ),
-              variants:product_variants(
-                id,
-                title,
-                price,
-                inventory_quantity,
-                is_active
-              )
-            `)
-            .eq('is_active', true)
+          let query
 
-          // Apply filters
           if (category) {
-            query = query.eq('product_categories.category_id', category)
+            // When filtering by category, use inner join to ensure only products in that category
+            query = supabase
+              .from('products')
+              .select(`
+                *,
+                product_categories!inner(
+                  category:categories(*)
+                ),
+                variants:product_variants(
+                  id,
+                  title,
+                  price,
+                  inventory_quantity,
+                  is_active
+                )
+              `)
+              .eq('is_active', true)
+              .eq('product_categories.category_id', category)
+          } else {
+            // When not filtering by category, use left join to include all products
+            query = supabase
+              .from('products')
+              .select(`
+                *,
+                product_categories(
+                  category:categories(*)
+                ),
+                variants:product_variants(
+                  id,
+                  title,
+                  price,
+                  inventory_quantity,
+                  is_active
+                )
+              `)
+              .eq('is_active', true)
           }
 
           if (search) {

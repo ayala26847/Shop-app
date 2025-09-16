@@ -199,7 +199,7 @@
   /* Primary button with warm bakery gradient */
   .btn-primary {
     @apply bg-gradient-to-br from-bakery-brown-500 via-bakery-peach-500 to-bakery-gold-500
-           text-white font-semibold py-3 px-6 rounded-2xl
+           text-white font-semibold py-3 px-6 rounded-2xl min-h-[44px] touch-manipulation
            hover:from-bakery-brown-600 hover:via-bakery-peach-600 hover:to-bakery-gold-600
            transition-all duration-300 shadow-warm hover:shadow-large
            hover:scale-[1.02] active:scale-[0.98]
@@ -209,7 +209,7 @@
   /* Secondary button with cream tones */
   .btn-secondary {
     @apply bg-gradient-to-br from-bakery-cream-100 to-bakery-cream-200
-           text-bakery-brown-700 font-medium py-3 px-6 rounded-2xl border border-bakery-cream-300
+           text-bakery-brown-700 font-medium py-3 px-6 rounded-2xl border border-bakery-cream-300 min-h-[44px] touch-manipulation
            hover:from-bakery-cream-200 hover:to-bakery-cream-300 hover:border-bakery-cream-400
            transition-all duration-300 shadow-soft hover:shadow-medium
            hover:scale-[1.02] active:scale-[0.98]
@@ -218,7 +218,7 @@
 
   /* Outline button for less prominent actions */
   .btn-outline {
-    @apply border-2 border-bakery-brown-300 text-bakery-brown-600 font-medium py-3 px-6 rounded-2xl
+    @apply border-2 border-bakery-brown-300 text-bakery-brown-600 font-medium py-3 px-6 rounded-2xl min-h-[44px] touch-manipulation
            hover:bg-bakery-brown-50 hover:border-bakery-brown-400 hover:text-bakery-brown-700
            transition-all duration-300 shadow-soft hover:shadow-medium
            hover:scale-[1.02] active:scale-[0.98]
@@ -227,17 +227,17 @@
 
   /* Small button variant */
   .btn-sm {
-    @apply py-2 px-4 text-sm rounded-xl;
+    @apply py-2 px-4 text-sm rounded-xl min-h-[40px] touch-manipulation;
   }
 
   /* Large button variant */
   .btn-lg {
-    @apply py-4 px-8 text-lg rounded-3xl;
+    @apply py-4 px-8 text-lg rounded-3xl min-h-[48px] touch-manipulation;
   }
 
   /* Danger button for destructive actions */
   .btn-danger {
-    @apply bg-gradient-to-br from-red-500 to-red-600 text-white font-semibold py-3 px-6 rounded-2xl
+    @apply bg-gradient-to-br from-red-500 to-red-600 text-white font-semibold py-3 px-6 rounded-2xl min-h-[44px] touch-manipulation
            hover:from-red-600 hover:to-red-700
            transition-all duration-300 shadow-warm hover:shadow-large
            hover:scale-[1.02] active:scale-[0.98]
@@ -246,7 +246,7 @@
 
   /* Success button for positive actions */
   .btn-success {
-    @apply bg-gradient-to-br from-green-500 to-green-600 text-white font-semibold py-3 px-6 rounded-2xl
+    @apply bg-gradient-to-br from-green-500 to-green-600 text-white font-semibold py-3 px-6 rounded-2xl min-h-[44px] touch-manipulation
            hover:from-green-600 hover:to-green-700
            transition-all duration-300 shadow-warm hover:shadow-large
            hover:scale-[1.02] active:scale-[0.98]
@@ -255,7 +255,50 @@
 
   /* Disabled button state */
   .btn-disabled {
-    @apply opacity-50 cursor-not-allowed pointer-events-none;
+    @apply opacity-50 cursor-not-allowed pointer-events-none min-h-[44px] touch-manipulation;
+  }
+
+  /* Mobile-specific button adjustments */
+  @media (max-width: 768px) {
+    .btn-primary {
+      @apply py-4 px-6 text-base min-h-[48px];
+    }
+    
+    .btn-secondary {
+      @apply py-4 px-6 text-base min-h-[48px];
+    }
+    
+    .btn-outline {
+      @apply py-4 px-6 text-base min-h-[48px];
+    }
+    
+    .btn-sm {
+      @apply py-3 px-4 text-sm min-h-[44px];
+    }
+    
+    .btn-lg {
+      @apply py-5 px-8 text-lg min-h-[52px];
+    }
+    
+    .btn-danger {
+      @apply py-4 px-6 text-base min-h-[48px];
+    }
+    
+    .btn-success {
+      @apply py-4 px-6 text-base min-h-[48px];
+    }
+    
+    .btn-disabled {
+      @apply py-4 px-6 text-base min-h-[48px];
+    }
+    
+    .form-input {
+      @apply py-3 px-4 text-base min-h-[48px];
+    }
+    
+    .category-chip {
+      @apply py-3 px-4 text-sm min-h-[44px];
+    }
   }
 
   /* Consistent spacing utilities */
@@ -294,7 +337,7 @@
   }
 
   .form-input {
-    @apply input-field;
+    @apply input-field min-h-[44px] text-base touch-manipulation;
   }
 
   .form-error {
@@ -376,11 +419,11 @@
 
   /* Category chip styles */
   .category-chip {
-    @apply inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full
-           bg-bakery-blush-50 text-bakery-blush-700 border border-bakery-blush-200
-           hover:bg-bakery-blush-100 hover:border-bakery-blush-300
-           transition-all duration-200 cursor-pointer
-           hover:scale-105 active:scale-95;
+    @apply inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-medium rounded-full
+           bg-gradient-to-r from-bakery-cream-100 to-bakery-peach-100 text-bakery-brown-700 border border-bakery-cream-200
+           hover:from-bakery-cream-200 hover:to-bakery-peach-200 hover:text-bakery-brown-800 hover:border-bakery-cream-300
+           transition-all duration-300 cursor-pointer touch-manipulation min-h-[44px] justify-center
+           hover:scale-105 active:scale-95 shadow-sm hover:shadow-lg;
   }
 
   /* Loading spinner styles */

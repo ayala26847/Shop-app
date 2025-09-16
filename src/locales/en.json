@@ -61,6 +61,7 @@
   },
   "categories": {
     "browse_by_category": "Browse by Category",
+    "browse": "Browse by Category",
     "bakery": "Bakery",
     "dairy": "Dairy",
     "frozen": "Frozen",
@@ -141,7 +142,8 @@
     "back": "Back",
     "continue": "Continue",
     "processing": "Processing...",
-    "subtotal": "Subtotal"
+    "subtotal": "Subtotal",
+    "backToHome": "Back to Home"
   },
   "checkout": {
     "steps": {

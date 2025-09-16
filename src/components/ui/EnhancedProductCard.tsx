@@ -5,6 +5,7 @@ import { useDirection } from '../../hooks/useDirection'
 import { useAddToCartMutation } from '../../store/api/cartApi'
 import { OptimizedImage } from './OptimizedImage'
 import { useLocalizedText, useLocalizedDescription } from '../../utils/languageUtils'
+import { getCategoryDisplayName } from '../../utils/categoryUtils'
 import type { EnhancedProduct } from '../../store/api/productsApi'
 
 interface EnhancedProductCardProps {
@@ -231,7 +232,7 @@ export function EnhancedProductCard({
                   to={`/category/${category.id}`}
                   className="category-chip text-xs"
                 >
-                  {t(`categories.${category.id}`)}
+                  {getCategoryDisplayName(category, t)}
                 </Link>
               ))}
               {product.categories.length > 3 && (

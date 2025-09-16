@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useDirection } from '../hooks/useDirection';
 import { useGetCategoryQuery } from '../store/api/productsApi';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+import { getCategoryDisplayName } from '../utils/categoryUtils';
 
 export default function CategoryPage() {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +15,7 @@ export default function CategoryPage() {
 
   // Fetch category data
   const { data: category, isLoading, error } = useGetCategoryQuery(id || '');
+
 
   if (isLoading) {
     return (
@@ -31,16 +33,16 @@ export default function CategoryPage() {
       <div className="container mx-auto px-4 py-6" dir={dir}>
         <div className="text-center py-12">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            {t('category.notFound')}
+            {t('common.error')}
           </h1>
           <p className="text-gray-600 mb-6">
-            {t('category.notFoundDescription')}
+            {t('category.empty')}
           </p>
           <a
             href="/"
-            className="inline-flex items-center px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-bakery-brown-600 text-white rounded-lg hover:bg-bakery-brown-700 transition-colors"
           >
-            {t('common.backToHome')}
+            {t('common.back')}
           </a>
         </div>
       </div>
@@ -51,7 +53,7 @@ export default function CategoryPage() {
     <div className="container mx-auto px-4 py-6" dir={dir}>
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">
-          {category.name_key ? t(category.name_key) : category.name_key || t(`categories.${id}`)}
+          {getCategoryDisplayName(category, t)}
         </h1>
         {category.description && (
           <p className="text-gray-600 text-lg">

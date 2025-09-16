@@ -66,7 +66,7 @@ export function Header() {
     }
   };
 
-  const handleSelectCategory = (_id: string) => {
+  const handleSelectCategory = () => {
     setMenuOpen(false);
   };
 
@@ -84,19 +84,25 @@ export function Header() {
     const rect = element.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const viewportWidth = window.innerWidth;
-    const menuHeight = 280; // Approximate menu height
-    const menuWidth = 256; // 64 * 4 = 256px (w-64)
+    const menuHeight = 300; // Approximate menu height - increased for safety
 
-    // Check if menu would be cut off vertically
-    if (rect.bottom + menuHeight > viewportHeight) {
+    // Calculate available space below and above
+    const spaceBelow = viewportHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    // Position menu based on available space
+    if (spaceBelow < menuHeight && spaceAbove > spaceBelow) {
       setMenuPosition('top');
     } else {
       setMenuPosition('bottom');
     }
 
-    // For mobile, always position at top to avoid viewport issues
+    // For mobile screens, prioritize keeping menu visible
     if (viewportWidth < 768) {
-      setMenuPosition('top');
+      // On mobile, prefer top positioning if there's not enough space below
+      if (spaceBelow < 250) {
+        setMenuPosition('top');
+      }
     }
   };
 
@@ -167,13 +173,13 @@ export function Header() {
         </nav>
 
         {/* Right side - Search, Cart, Language */}
-        <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4">
+        <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-1 sm:space-x-reverse sm:space-x-2 lg:space-x-reverse lg:space-x-4' : 'space-x-1 sm:space-x-2 lg:space-x-4'}`}>
           {/* Search */}
           <form onSubmit={handleSearch} className="hidden md:block relative">
             <label htmlFor="header-search" className="sr-only">
               {t("navbar.searchProducts")}
             </label>
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
               <svg className="h-5 w-5 text-bakery-brown-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -185,10 +191,11 @@ export function Header() {
               onChange={handleSearchInputChange}
               placeholder={t("navbar.search")}
               aria-label={t("navbar.searchProducts")}
-              className="w-48 lg:w-64 pl-10 pr-4 py-2 border-2 border-bakery-cream-300 rounded-full bg-white/50 backdrop-blur-sm
+              className={`w-48 lg:w-64 ${isRTL ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border-2 border-bakery-cream-300 rounded-full bg-white/50 backdrop-blur-sm
                          focus:outline-none focus:ring-4 focus:ring-bakery-cream-200 focus:border-bakery-brown-400
                          transition-all duration-300 placeholder-bakery-brown-400
-                         hover:border-bakery-cream-400 hover:bg-white/80"
+                         hover:border-bakery-cream-400 hover:bg-white/80`}
+              dir={dir}
             />
           </form>
 
@@ -215,7 +222,7 @@ export function Header() {
                 <div className="relative">
                   <button
                     onClick={handleUserMenuToggle}
-                    className="flex items-center space-x-2 p-2 hover:bg-bakery-cream-50 rounded-full transition-colors duration-200"
+                    className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'} p-2 hover:bg-bakery-cream-50 rounded-full transition-colors duration-200`}
                     aria-label={t("auth.links.account")}
                   >
                     <div className="w-10 h-10 bg-gradient-to-br from-bakery-brown-500 to-bakery-gold-500 rounded-full flex items-center justify-center shadow-warm">
@@ -235,7 +242,7 @@ export function Header() {
 
                   {/* User Dropdown Menu */}
                   {userMenuOpen && (
-                    <div className={`fixed ${isRTL ? 'left-4' : 'right-4'} ${menuPosition === 'top' ? 'bottom-20' : 'top-20'} w-64 sm:w-72 bg-white rounded-xl shadow-2xl border border-bakery-cream-200 py-2 z-[9999] max-h-80 overflow-y-auto`}>
+                    <div className={`absolute ${isRTL ? 'left-0' : 'right-0'} ${menuPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'} w-64 sm:w-72 bg-white rounded-xl shadow-2xl border border-bakery-cream-200 py-2 z-[9999] max-h-80 overflow-y-auto transform transition-all duration-200 opacity-100 scale-100`}>
                       <div className="px-4 py-3 border-b border-gray-100">
                         <p className="text-sm font-medium text-gray-900">
                           {user.user_metadata?.full_name || 'User'}
@@ -296,7 +303,7 @@ export function Header() {
                 </div>
               ) : (
                 // Guest User - Sign In/Up Links
-                <div className="flex items-center space-x-2 lg:space-x-3">
+                <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2 lg:space-x-reverse lg:space-x-3' : 'space-x-2 lg:space-x-3'}`}>
                   <Link
                     to="/auth/signin"
                     className="btn-outline text-xs lg:text-sm py-2 px-3 lg:px-4"
@@ -331,7 +338,7 @@ export function Header() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div
-          className={`fixed top-0 ${isRTL ? "left-0" : "right-0"} h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out translate-x-0`}
+          className={`fixed top-0 ${isRTL ? "right-0" : "left-0"} h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out translate-x-0 overflow-y-auto border-l border-gray-200`}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
@@ -381,40 +388,108 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        <nav className={`flex flex-col p-4 sm:p-6 space-y-2 ${isRTL ? 'text-right' : 'text-left'}`} dir={dir}>
-          <NavLink 
-            to="/" 
+        <nav className={`flex flex-col p-4 sm:p-6 space-y-3 ${isRTL ? 'text-right' : 'text-left'}`} dir={dir}>
+          <NavLink
+            to="/"
             onClick={() => setMenuOpen(false)}
-            className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium touch-manipulation ${isRTL ? 'flex-row-reverse' : ''}`}
+            className={`flex items-center px-4 py-3 text-bakery-brown-700 hover:bg-gradient-to-r hover:from-bakery-cream-50 hover:to-bakery-peach-50 hover:text-bakery-brown-800 rounded-xl transition-all duration-200 font-medium touch-manipulation min-h-[48px] ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}
           >
-            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
             {t("navbar.home")}
           </NavLink>
-          <NavLink 
-            to="/about" 
+
+          <NavLink
+            to="/about"
             onClick={() => setMenuOpen(false)}
-            className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium touch-manipulation ${isRTL ? 'flex-row-reverse' : ''}`}
+            className={`flex items-center px-4 py-3 text-bakery-brown-700 hover:bg-gradient-to-r hover:from-bakery-cream-50 hover:to-bakery-peach-50 hover:text-bakery-brown-800 rounded-xl transition-all duration-200 font-medium touch-manipulation min-h-[48px] ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}
           >
-            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {t("navbar.about")}
           </NavLink>
-          <div className="px-4 py-3">
-            <CategoriesMenu onSelectCategory={handleSelectCategory} />
+
+          {/* Categories Section */}
+          <div className="py-2 border-t border-bakery-cream-200">
+            <div className="px-4 py-2 text-sm font-semibold text-bakery-brown-600 uppercase tracking-wide">
+              {t("navbar.categories")}
+            </div>
+            <div className="mt-2 space-y-1">
+              <CategoriesMenu onSelectCategory={handleSelectCategory} />
+            </div>
           </div>
-          <NavLink 
-            to="/contact" 
+
+          <NavLink
+            to="/contact"
             onClick={() => setMenuOpen(false)}
-            className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-yellow-50 hover:text-pink-600 rounded-xl transition-all duration-200 font-medium touch-manipulation ${isRTL ? 'flex-row-reverse' : ''}`}
+            className={`flex items-center px-4 py-3 text-bakery-brown-700 hover:bg-gradient-to-r hover:from-bakery-cream-50 hover:to-bakery-peach-50 hover:text-bakery-brown-800 rounded-xl transition-all duration-200 font-medium touch-manipulation min-h-[48px] ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}
           >
-            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             {t("navbar.contact")}
           </NavLink>
+
+          {/* User Section for Mobile */}
+          {!loading && (
+            <div className="border-t border-bakery-cream-200 pt-4 mt-4">
+              {user ? (
+                <div className="space-y-2">
+                  <div className="px-4 py-2 text-sm font-semibold text-bakery-brown-600">
+                    {user.user_metadata?.full_name || 'משתמש'}
+                  </div>
+                  <Link
+                    to="/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex items-center px-4 py-3 text-bakery-brown-700 hover:bg-bakery-cream-50 rounded-xl transition-all duration-200 font-medium ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}
+                  >
+                    <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    {t("auth.links.profile")}
+                  </Link>
+                  <Link
+                    to="/orders"
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex items-center px-4 py-3 text-bakery-brown-700 hover:bg-bakery-cream-50 rounded-xl transition-all duration-200 font-medium ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}
+                  >
+                    <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    {t("navbar.orders")}
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className={`flex items-center w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 font-medium ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}
+                  >
+                    <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    {t("auth.buttons.signOut")}
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Link
+                    to="/auth/signin"
+                    onClick={() => setMenuOpen(false)}
+                    className="block w-full text-center py-3 px-4 bg-bakery-brown-600 text-white rounded-xl hover:bg-bakery-brown-700 transition-colors font-medium"
+                  >
+                    {t("auth.buttons.signIn")}
+                  </Link>
+                  <Link
+                    to="/auth/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className="block w-full text-center py-3 px-4 border-2 border-bakery-brown-600 text-bakery-brown-600 rounded-xl hover:bg-bakery-brown-50 transition-colors font-medium"
+                  >
+                    {t("auth.buttons.signUp")}
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         </nav>
         </div>
       )}

@@ -61,6 +61,7 @@
   },
   "categories": {
     "browse_by_category": "דפדוף לפי קטגוריה",
+    "browse": "דפדוף לפי קטגוריה",
     "bakery": "חומרי אפייה",
     "dairy": "מוצרי חלב",
     "frozen": "מוצרים קפואים",
@@ -139,7 +140,8 @@
     "back": "חזור",
     "continue": "המשך",
     "processing": "מעבד...",
-    "subtotal": "סכום ביניים"
+    "subtotal": "סכום ביניים",
+    "backToHome": "חזרה לעמוד הבית"
   },
   "checkout": {
     "steps": {
