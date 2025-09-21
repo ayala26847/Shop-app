@@ -13,7 +13,7 @@ export default function CategoryChips() {
     return (
       <div id="categories" className="mt-12">
         <h2 className="text-3xl font-bold text-bakery-brown-800 mb-6 text-center">
-          {t("categories.browse_by_category")}
+          {t('categories.browse_by_category')}
         </h2>
         <div className="flex justify-center">
           <LoadingSpinner size="lg" />
@@ -26,7 +26,7 @@ export default function CategoryChips() {
     return (
       <div id="categories" className="mt-12">
         <h2 className="text-3xl font-bold text-bakery-brown-800 mb-6 text-center">
-          {t("categories.browse_by_category")}
+          {t('categories.browse_by_category')}
         </h2>
         <div className="text-center text-gray-500">
           {t('errors.loadingProducts')}
@@ -38,7 +38,7 @@ export default function CategoryChips() {
   return (
     <div id="categories" className="mt-12">
       <h2 className="text-3xl font-bold text-bakery-brown-800 mb-6 text-center">
-        {t("categories.browse_by_category")}
+        {t('categories.browse_by_category')}
       </h2>
       <div className="overflow-x-auto no-scrollbar">
         <div className="flex gap-4 min-w-max pb-4 px-2 justify-center">

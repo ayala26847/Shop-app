@@ -59,21 +59,6 @@
     "decreaseQuantity": "Decrease quantity",
     "removeItem": "Remove {{item}} from cart"
   },
-  "categories": {
-    "browse_by_category": "Browse by Category",
-    "browse": "Browse by Category",
-    "bakery": "Bakery",
-    "dairy": "Dairy",
-    "frozen": "Frozen",
-    "fruits": "Fruits",
-    "seafood": "Seafood",
-    "beverages": "Beverages",
-    "snacks": "Snacks",
-    "condiments": "Condiments",
-    "cakes": "Cakes",
-    "cookies": "Cookies",
-    "cheesecakes": "Cheesecakes"
-  },
   "homepage": {
     "badge_new": "New on site",
     "hero_title": "All baking supplies in one place",
@@ -280,6 +265,11 @@
     "fastDeliveryDesc": "Same-day delivery in Israel, 1-3 days worldwide"
   },
   "categories": {
+    "browse_by_category": "Browse by Category",
+    "browse": "Browse by Category",
+    "cakes": "Cakes",
+    "cookies": "Cookies",
+    "cheesecakes": "Cheesecakes",
     "bakery": "Bakery",
     "cakes": "Cakes",
     "cheesecakes": "Cheesecakes",

@@ -8,7 +8,8 @@
       "Bash(yarn dev)",
       "Bash(yarn build:*)",
       "Bash(npx eslint:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(yarn list:*)"
     ],
     "deny": [],
     "ask": []
