@@ -1,9 +1,33 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
 import { useDirection } from '../../hooks/useDirection'
-import { addressSchema, type Address } from '../../types/checkout'
+import * as yup from 'yup'
+
+interface Address {
+  full_name: string
+  address_line_1: string
+  city: string
+  state_province: string
+  postal_code: string
+  country: string
+  company?: string
+  address_line_2?: string
+  phone?: string
+}
+
+const addressSchema = yup.object({
+  full_name: yup.string().required('Full name is required'),
+  address_line_1: yup.string().required('Address is required'),
+  city: yup.string().required('City is required'),
+  state_province: yup.string().required('State/Province is required'),
+  postal_code: yup.string().required('Postal code is required'),
+  country: yup.string().required('Country is required'),
+  company: yup.string().optional(),
+  address_line_2: yup.string().optional(),
+  phone: yup.string().optional()
+})
 
 interface ShippingStepProps {
   data?: Partial<Address>
@@ -20,7 +44,7 @@ export function ShippingStep({ data, onChange }: ShippingStepProps) {
     watch,
     formState: { errors }
   } = useForm<Address>({
-    resolver: zodResolver(addressSchema),
+    resolver: yupResolver(addressSchema),
     defaultValues: data,
     mode: 'onChange'
   })
@@ -28,9 +52,11 @@ export function ShippingStep({ data, onChange }: ShippingStepProps) {
   // Watch for changes and update parent
   const watchedValues = watch()
   React.useEffect(() => {
-    const validation = addressSchema.safeParse(watchedValues)
-    if (validation.success) {
-      onChange(validation.data)
+    try {
+      const validData = addressSchema.validateSync(watchedValues, { abortEarly: false })
+      onChange(validData)
+    } catch (error) {
+      // Validation failed, don't update parent
     }
   }, [watchedValues, onChange])
 

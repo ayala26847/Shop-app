@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { useDirection } from '../../hooks/useDirection'
 import { useAddToCartMutation } from '../../store/api/cartApi'
 import { OptimizedImage } from './OptimizedImage'
+import { useLocalizedText, useLocalizedDescription } from '../../utils/languageUtils'
+import { getCategoryDisplayName } from '../../utils/categoryUtils'
 import type { EnhancedProduct } from '../../store/api/productsApi'
 
 interface EnhancedProductCardProps {
@@ -24,6 +26,10 @@ export function EnhancedProductCard({
   const [isAdding, setIsAdding] = useState(false)
 
   const [addToCart] = useAddToCartMutation()
+
+  // Get localized text for product name and description
+  const localizedName = useLocalizedText(product.name)
+  const localizedDescription = useLocalizedDescription(product.short_description)
 
   // Get current variant or use base product
   const currentVariant = selectedVariant
@@ -101,7 +107,7 @@ export function EnhancedProductCard({
         <div className="image-overlay aspect-[4/3] bg-bakery-cream-50 relative">
           <OptimizedImage
             src={product.main_image || product.images?.[0] || '/placeholder-product.jpg'}
-            alt={`${product.name} - ${t('common.productImage')}`}
+            alt={`${localizedName} - ${t('common.productImage')}`}
             className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ${!isInStock ? 'grayscale opacity-75' : ''}`}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
@@ -123,14 +129,14 @@ export function EnhancedProductCard({
             id={`product-${product.id}-title`}
             className="font-bold text-xl text-bakery-brown-800 line-clamp-2 mb-3 hover:text-bakery-brown-900 transition-colors duration-300"
           >
-            {product.name}
+            {localizedName}
           </h3>
         </Link>
 
         {/* Short Description */}
-        {product.short_description && (
+        {localizedDescription && (
           <p className="text-bakery-brown-600 mb-4 line-clamp-2 leading-relaxed">
-            {product.short_description}
+            {localizedDescription}
           </p>
         )}
 
@@ -226,7 +232,7 @@ export function EnhancedProductCard({
                   to={`/category/${category.id}`}
                   className="category-chip text-xs"
                 >
-                  {t(`categories.${category.id}`)}
+                  {getCategoryDisplayName(category, t)}
                 </Link>
               ))}
               {product.categories.length > 3 && (
@@ -272,7 +278,7 @@ export function EnhancedProductCard({
               ? 'btn-primary'
               : 'bg-bakery-brown-300 text-bakery-brown-500 cursor-not-allowed py-3 px-4 rounded-2xl font-medium'
           } ${isAdding ? 'opacity-75' : ''}`}
-          aria-label={`${t('cta.add_to_cart')} - ${product.name}`}
+          aria-label={`${t('cta.add_to_cart')} - ${localizedName}`}
         >
           {isAdding ? (
             <div className="flex items-center justify-center">

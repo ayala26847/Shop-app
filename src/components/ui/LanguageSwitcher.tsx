@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
@@ -9,20 +10,15 @@ export const LanguageSwitcher = () => {
   };
 
   return (
-    <button
+    <motion.button
       onClick={changeLanguage}
-      className="flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-pink-50 to-yellow-50 hover:from-pink-100 hover:to-yellow-100 border border-pink-200 rounded-full text-sm font-medium text-gray-700 hover:text-pink-600 transition-all duration-200 group"
+      className="flex items-center justify-center w-8 h-8 border border-bakery-cream-300 hover:border-bakery-brown-400 rounded-full text-xs font-medium text-bakery-brown-600 hover:text-bakery-brown-800 bg-white hover:bg-bakery-cream-50 transition-all duration-200 shadow-sm hover:shadow-md"
+      title={i18n.language === "he" ? "Switch to English" : "החלף לעברית"}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
     >
-      <span className="text-lg">
-        {i18n.language === "he" ? "🇮🇱" : "🇺🇸"}
-      </span>
-      <span className="font-semibold">
-        {i18n.language === "he" ? "עברית" : "English"}
-      </span>
-      <svg className="w-4 h-4 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-      </svg>
-    </button>
+      {i18n.language === "he" ? "EN" : "ע"}
+    </motion.button>
   );
 };
 
